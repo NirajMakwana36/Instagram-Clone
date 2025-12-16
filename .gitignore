@@ -1,5 +1,5 @@
-# Node Models
-node_models
+# Node Modules
+node_modules/
 
 # Environment Files
 .env
