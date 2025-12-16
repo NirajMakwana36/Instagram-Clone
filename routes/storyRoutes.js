@@ -1,19 +1,27 @@
 const multer = require("multer");
-const router = require("./postRoutes"); // folder for story images
+const router = require("./postRoutes"); 
 const isLoggedIn = require("../middleware/auth");
-const storyModel = require("../models/storyModel");
+const storyController = require("../controllers/storyControlles");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public/uploads/stories");
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = Date.now() + "-" + file.originalname;
-    cb(null, uniqueName);
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: (req, file) => {
+    const isVideo = file.mimetype.startsWith("video");
+
+    return {
+      folder: "stories",
+      resource_type: isVideo ? "video" : "image",
+      allowed_formats: isVideo
+        ? ["mp4", "mov"]
+        : ["jpg", "jpeg", "png", "webp"],
+    };
   },
 });
 
 const upload = multer({ storage });
+
 
 router.get("/story", (req, res) => {
   res.render("storyUpload");
@@ -23,55 +31,11 @@ router.post(
   "/story",
   isLoggedIn,
   upload.single("storyImage"),
-  async (req, res) => {
-    try {
-      const story = new storyModel({
-        user: req.user.userId,
-        image: req.file.filename,
-        caption: req.body.caption || "",
-      });
-      await story.save();
-      res.redirect("/home"); // redirect home after upload
-    } catch (err) {
-      console.error(err);
-      res.status(500).send("Error uploading story");
-    }
-  }
+  storyController.uploadStory
 );
 
-router.get("/stories", isLoggedIn, async (req, res) => {
-  try {
-    const stories = await storyModel
-      .find({ expiresAt: { $gt: new Date() } }) // only unexpired
-      .populate("user", "username pic")
-      .sort({ createdAt: -1 })
-      .lean();
-    res.render("stories", { stories, currentUser: req.user });
-  } catch (err) {
-    console.error(err);
-    res.send("Error loading stories");
-  }
-});
+router.get("/stories", isLoggedIn, storyController.showAllStories);
 
-router.get("/story/:id", isLoggedIn, async (req, res) => {
-  try {
-    const story = await storyModel
-      .findById(req.params.id)
-      .populate("user", "username pic")
-      .lean();
-    if (!story) return res.status(404).send("Story not found");
-
-    // Add current user to viewers if not already
-    if (!story.viewers.includes(req.user.userId)) {
-      story.viewers.push(req.user.userId);
-      await story.save();
-    }
-
-    res.json(story);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
-  }
-});
+router.get("/story/:id", isLoggedIn, storyController.seeStory);
 
 module.exports = router;

@@ -7,7 +7,7 @@ const reelSchema = new mongoose.Schema({
     required: true,
   },
   video: {
-    type: String, // path to uploaded video
+    type: String, 
     required: true,
   },
   caption: {

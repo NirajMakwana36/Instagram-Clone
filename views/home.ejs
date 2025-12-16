@@ -18,51 +18,16 @@
     <%- include("stories", { stories: stories }) %>
         <br><br><br><br><br><br>
 
+        <!-- sidebar -->
+        <%- include('partials/sidebar.ejs') %>
 
-        <div style="border-right: 1px solid #313131;" class="fixed h-screen w-60 top-0">
-            <div class="mx-10 h-screen w-full flex flex-col item-center justify-center gap-10">
-                <div class="header">
-                    <h1 class="text-2xl">Instagram</h1>
-                </div>
-                <div class="navbar flex flex-col gap-8">
-                    <a href="/home" class="text-xl font-light p-1 rounded-md">
-                        <h2 class="flex gap-5"><i class="fa-solid fa-house"></i> Home</h2>
-                    </a>
-                    <a href="/search" class="text-xl font-light p-1 rounded-md">
-                        <h2 class="flex gap-5"><i class="fa-solid fa-magnifying-glass"></i> Search</h2>
-                    </a>
-                    <a href="/explore" class="text-xl font-light p-1 rounded-md">
-                        <h2 class="flex gap-5"><i class="fa-regular fa-compass"></i> Explore</h2>
-                    </a>
-                    <a href="/reels" class="text-xl font-light p-1 rounded-md">
-                        <h2 class="flex gap-5"><i class="fa-solid fa-clapperboard"></i> Reels</h2>
-                    </a>
-                    <a href="/messages" class="text-xl font-light p-1 rounded-md">
-                        <h2 class="flex gap-5"><i class="fa-solid fa-paper-plane"></i> Messages</h2>
-                    </a>
-                    <a href="/notifications" class="text-xl font-light p-1 rounded-md">
-                        <h2 class="flex gap-5"><i class="fa-regular fa-heart"></i> Notifications</h2>
-                    </a>
-                    <a href="/create" class="text-xl font-light p-1 rounded-md">
-                        <h2 class="flex gap-5"><i class="fa-regular fa-square-plus"></i> Create</h2>
-                    </a>
-                    <a href="/profile" class="text-xl font-light p-1 rounded-md">
-                        <h2 class="flex gap-5"><i class="fa-regular fa-user"></i> Profile</h2>
-                    </a>
-                    <a href="" class="text-xl font-light p-1 rounded-md">
-                        <h2 class="flex gap-5"><i class="fa-solid fa-bars"></i> More</h2>
-                    </a>
-
-                </div>
-            </div>
-        </div>
         <div class="max-w-xl mx-auto mt-6 ">
             <!-- <h1 class="text-2xl mb-10 mt-5">Post Suggestions for you</h1> -->
             <% posts.reverse().forEach(post=> { %>
                 <div class="rounded-xl shadow mb-6">
                     <div class="p-3 font-bold">
                         <div class="profile-pic w-10 h-10 rounded-full border-2 border-zinc-900 overflow-hidden inline">
-                            <img src="/uploads/<%= post.user.pic || 'default.webp' %>" alt=""
+                            <img src="<%= post.user.pic || 'default.webp' %>" alt=""
                                 class="w-10 h-10 rounded-full object-cover inline" />
                         </div>
                         <a href="newprofile/<%= post.user._id %>" class="hover:underline">
@@ -70,7 +35,7 @@
                         </a>
                     </div>
                     <div class="p2 border-2 border-zinc-800 rounded-md">
-                <img src="/uploads/<%= post.image %>" class="w-full rounded-md" />
+                <img src="<%= post.image %>" class="w-full rounded-md" />
                     </div>
                     <div class="p-3">
                         <form action="/like/<%= post._id %>" method="POST">
@@ -99,7 +64,7 @@
                                 </a>
                                 <% } %>
 
-                                    <!-- Show last 3 comments initially -->
+                                    <!-- last 3 comments initially -->
                                     <div id="comments-<%= post._id %>">
                                         <% post.comments.slice(-3).forEach(c=> { %>
                                             <p>
@@ -143,7 +108,7 @@
                 <div class="flex items-center gap-4 mb-4 flex-col">
                     <div class="flex gap-3">
                         <div class="profile-pic w-10 h-10 rounded-full border-2 border-zinc-900 overflow-hidden">
-                            <img src="/uploads/<%= u.pic %>" alt="" class="w-full h-full object-cover">
+                            <img src="<%= u.pic %>" alt="" class="w-full h-full object-cover">
                         </div>
                         <div>
                             <a href="newprofile/<%= u._id %>" class="hover:underline">

@@ -55,7 +55,7 @@
     <div class="space-y-2">
       <% following.forEach(f => { %>
         <a href="/messages/<%= f._id %>" class="flex items-center gap-3 p-2 rounded hover:bg-zinc-800">
-          <img src="/uploads/<%= f.pic || '/default.png' %>" class="w-10 h-10 rounded-full object-cover">
+          <img src="<%= f.pic || '/default.png' %>" class="w-10 h-10 rounded-full object-cover">
           <span><%= f.username %></span>
         </a>
       <% }) %>
@@ -66,7 +66,7 @@
   <div class="flex-1 flex flex-col absolute w-[1220px] h-screen right-0">
     <!-- Chat Header -->
     <div class="flex items-center gap-3 p-4 border-b border-zinc-800">
-      <img src="/uploads/<%= chatUser.pic || '/default.png' %>" class="w-10 h-10 rounded-full object-cover">
+      <img src="<%= chatUser.pic || '/default.png' %>" class="w-10 h-10 rounded-full object-cover">
       <h2 class="font-semibold"><%= chatUser.username %></h2>
     </div>
 

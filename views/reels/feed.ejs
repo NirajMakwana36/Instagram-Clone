@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reels</title>
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
         integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
@@ -63,42 +62,7 @@
 <body class="bg-black text-white">
 
     <!-- Sidebar Navbar -->
-    <div style="border-right: 1px solid #313131;" class="fixed h-screen w-60">
-        <div class="mx-10 h-screen w-full flex flex-col item-center justify-center gap-10">
-            <div class="header">
-                <h1 class="text-2xl">Instagram</h1>
-            </div>
-            <div class="navbar flex flex-col gap-8">
-                <a href="/home" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-solid fa-house"></i> Home</h2>
-                </a>
-                <a href="/search" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-solid fa-magnifying-glass"></i> Search</h2>
-                </a>
-                <a href="/explore" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-regular fa-compass"></i> Explore</h2>
-                </a>
-                <a href="/reels" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-solid fa-clapperboard"></i> Reels</h2>
-                </a>
-                <a href="/messages" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-solid fa-paper-plane"></i> Messages</h2>
-                </a>
-                <a href="/notifications" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-regular fa-heart"></i> Notifications</h2>
-                </a>
-                <a href="/create" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-regular fa-square-plus"></i> Create</h2>
-                </a>
-                <a href="/profile" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-regular fa-user"></i> Profile</h2>
-                </a>
-                <a href="" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-solid fa-bars"></i> More</h2>
-                </a>
-            </div>
-        </div>
-    </div>
+    <%- include('../partials/sidebar.ejs') %>
 
     <!-- Reels Section -->
     <div class="ml-60 w-[calc(100%-15rem)] h-screen flex justify-center items-center">

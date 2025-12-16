@@ -1,24 +1,19 @@
 const multer = require("multer");
-const path = require("path");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/uploads/reels");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "reels",
+    resource_type: "video",
+    allowed_formats: ["mp4", "mov", "avi", "mkv"],
   },
 });
 
 const upload = multer({
-  storage: storage,
-  fileFilter: function (req, file, cb) {
-    const ext = path.extname(file.originalname).toLowerCase();
-    if (ext !== ".mp4" && ext !== ".mov" && ext !== ".avi" && ext !== ".mkv") {
-      return cb(new Error("Only video files are allowed"));
-    }
-    cb(null, true);
-  },
+  storage,
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB
 });
 
 module.exports = upload;

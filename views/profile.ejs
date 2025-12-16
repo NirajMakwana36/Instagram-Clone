@@ -130,7 +130,7 @@
                 <div class="flex gap-50">
                     <div onclick="document.querySelector('.upload').style.display = 'block'"
                         class="profile-pic w-42 h-42 rounded-full cursor-pointer border-2 border-zinc-900 overflow-hidden">
-                        <img src="/uploads/<%= pic %>" alt="" class="w-full h-full object-cover">
+                        <img src="<%= pic %>" alt="" class="w-full h-full object-cover">
                     </div>
                     <div class="flex-col">
                         <div class="profile-info mt-5 flex item-center gap-5">
@@ -197,8 +197,8 @@
         <div class="post-container mx-40 grid grid-cols-3 gap-5 mt-2">
             <% newPost.reverse().forEach((post)=> { %>
                 <div class="post w-80 h-100 cursor-pointer" onclick='openPost(
-        "/uploads/<%= post.image %>", 
-        "/uploads/<%= post.user.pic %>", 
+        "<%= post.image %>", 
+        "<%= post.user.pic %>", 
         "<%= post.user.username %>", 
         <%- JSON.stringify(post.comments) %>, 
         "<%= post._id %>"
@@ -207,12 +207,10 @@
                     <a href="/delete/<%= post._id %>" id="delete-btn"></a>
                     <h1 class="absolute" onclick="document.querySelector('.delete-popup').style.visibility = 'visible'">
                         <i class="fa-solid fa-trash"></i></h1>
-                    <img src="/uploads/<%= post.image %>" alt="" class="w-full h-full object-cover">
+                    <img src="<%= post.image %>" alt="" class="w-full h-full object-cover">
                 </div>
                 <% }) %>
         </div>
-        <!-- Reels Grid -->
-
     </div>
 
     <div style="visibility: hidden;"
@@ -279,12 +277,11 @@
             comments.forEach(c => {
                 commentBox.innerHTML += `
             <div class="flex items-start gap-2 mb-2">
-                <img src="/uploads/${c.user.pic}" class="w-8 h-8 rounded-full object-cover">
+                <img src="${c.user.pic}" class="w-8 h-8 rounded-full object-cover">
                 <p><b>${c.user.username}</b> ${c.text}</p>
             </div>`;
             });
 
-            // ✅ set form action dynamically
             const form = document.getElementById("commentForm");
             form.action = `/comment/${postId}`;
         }

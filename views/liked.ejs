@@ -13,43 +13,8 @@
 
     <!-- Navbar Sidebar -->
     <body class="bg-zinc-950 text-white overflow-x-hidden">
-    <div style="border-right: 1px solid #313131;" class="fixed h-screen w-60">
-        <div class="mx-10 h-screen w-full flex flex-col item-center justify-center gap-10">
-            <div class="header">
-                <h1 class="text-2xl">Instagram</h1>
-            </div>
-            <div class="navbar flex flex-col gap-8">
-                <a href="/home" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-solid fa-house"></i> Home</h2>
-                </a>
-                <a href="/search" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-solid fa-magnifying-glass"></i> Search</h2>
-                </a>
-                <a href="/explore" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-regular fa-compass"></i> Explore</h2>
-                </a>
-                <a href="/reels" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-solid fa-clapperboard"></i> Reels</h2>
-                </a>
-                <a href="/messages" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-solid fa-paper-plane"></i> Messages</h2>
-                </a>
-                <a href="/notifications" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-regular fa-heart"></i> Notifications</h2>
-                </a>
-                <a href="/create" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-regular fa-square-plus"></i> Create</h2>
-                </a>
-                <a href="/profile" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-regular fa-user"></i> Profile</h2>
-                </a>
-                <a href="" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-solid fa-bars"></i> More</h2>
-                </a>
-
-            </div>
-        </div>
-    </div>
+        <!-- Sidebar -->
+        <%- include('partials/sidebar.ejs') %>
 
     <!-- Liked Posts Grid -->
     <div class="ml-60 p-10 flex-1">
@@ -61,15 +26,15 @@
                 <div class="post-container grid grid-cols-3 gap-5">
                     <% likedPosts.reverse().forEach(post=> { %>
                         <div class="post w-100 h-100 cursor-pointer rounded overflow-hidden" onclick='openPost(
-                 "/uploads/<%= post.image %>", 
-                 "/uploads/<%= post.user.pic %>", 
+                 "<%= post.image %>", 
+                 "<%= post.user.pic %>", 
                  "<%= post.user.username %>", 
                  <%- JSON.stringify(post.comments) %>, 
                  "<%= post._id %>",
                  <%- JSON.stringify(post.likes) %>,
                  "<%= currentUser._id %>"
                )'>
-                            <img src="/uploads/<%= post.image %>" alt="" class="w-full h-full object-cover">
+                            <img src="<%= post.image %>" alt="" class="w-full h-full object-cover">
                         </div>
                         <% }) %>
                 </div>
@@ -131,7 +96,7 @@
             comments.forEach(c => {
                 commentBox.innerHTML += `
           <div class="flex items-start gap-2 mb-2">
-            <img src="/uploads/${c.user.pic}" class="w-8 h-8 rounded-full object-cover">
+            <img src="${c.user.pic}" class="w-8 h-8 rounded-full object-cover">
             <p><b>${c.user.username}</b> ${c.text}</p>
           </div>`;
             });

@@ -8,14 +8,11 @@
   <style>
     .scroll-bar {
             scrollbar-width: none;
-            /* Firefox */
             -ms-overflow-style: none;
-            /* IE and Edge */
         }
 
         .scroll-bar::-webkit-scrollbar {
             display: none;
-            /* Chrome, Safari */
         }
   </style>
 </head>
@@ -34,7 +31,7 @@
         </a>
     <% stories.forEach((story, index) => { %>
       <div class="flex flex-col items-center  cursor-pointer" onclick="openStory(<%= index %>)">
-        <img src="/uploads/stories/<%= story.image %>"
+        <img src="<%= story.image %>"
           class="w-16 h-16 rounded-full border-2 border-pink-500 object-cover">
         <small class="text-gray-400"><%= story.user.username %></small>
       </div>
@@ -82,8 +79,8 @@
 
     function showStory() {
       const story = stories[currentIndex];
-      document.getElementById("storyImg").src = `/uploads/stories/${story.image}`;
-      document.getElementById("storyUserPic").src = `/uploads/${story.user.pic}` || "/default.png";
+      document.getElementById("storyImg").src = `${story.image}`;
+      document.getElementById("storyUserPic").src = `${story.user.pic}` || "/default.png";
       document.getElementById("storyUsername").innerText = story.user.username;
 
       resetProgressBars();
