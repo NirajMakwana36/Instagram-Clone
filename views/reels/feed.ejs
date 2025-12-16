@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reels</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .reels-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+        }
+
+        .reel {
+            height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: black;
+        }
+
+        .reel video {
+            height: 100%;
+            width: auto;
+            max-height: 100vh;
+            max-width: 480px;
+            /* like Instagram reel width */
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .reels-container {
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+        }
+
+        .reels-container::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari */
+        }
+    </style>
+</head>
+
+<body class="bg-black text-white">
+
+    <!-- Sidebar Navbar -->
+    <div style="border-right: 1px solid #313131;" class="fixed h-screen w-60">
+        <div class="mx-10 h-screen w-full flex flex-col item-center justify-center gap-10">
+            <div class="header">
+                <h1 class="text-2xl">Instagram</h1>
+            </div>
+            <div class="navbar flex flex-col gap-8">
+                <a href="/home" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-house"></i> Home</h2>
+                </a>
+                <a href="/search" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-magnifying-glass"></i> Search</h2>
+                </a>
+                <a href="/explore" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-compass"></i> Explore</h2>
+                </a>
+                <a href="/reels" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-clapperboard"></i> Reels</h2>
+                </a>
+                <a href="/messages" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-paper-plane"></i> Messages</h2>
+                </a>
+                <a href="/notifications" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-heart"></i> Notifications</h2>
+                </a>
+                <a href="/create" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-square-plus"></i> Create</h2>
+                </a>
+                <a href="/profile" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-user"></i> Profile</h2>
+                </a>
+                <a href="" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-bars"></i> More</h2>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reels Section -->
+    <div class="ml-60 w-[calc(100%-15rem)] h-screen flex justify-center items-center">
+        <div class="reels-container w-[480px]">
+            <% reels.forEach(reel=> { %>
+                <div class="reel relative">
+                    <video class="reel-video" src="/uploads/reels/<%= reel.video %>" muted loop></video>
+
+                    <!-- User Info at Bottom -->
+                    <div class="absolute bottom-6 left-4 flex items-center gap-3">
+                        <div class="reel-info">
+                            <div class="flex items-center gap-3">
+                                <!-- Profile Picture -->
+                                <img src="/uploads/<%= reel.user.pic %>" class="w-10 h-10 rounded-full object-cover" />
+
+                                <!-- Username -->
+                                <a href="newprofile/<%= reel.user._id %>">
+                                    <p class="font-bold">
+                                        <%= reel.user.username %>
+                                    </p>
+                                </a>
+
+                                <!-- Follow/Unfollow Button -->
+                                <% if (currentUser && reel.user._id.toString() !==currentUser._id.toString()) { %>
+                                    <form action="/follow/<%= reel.user._id %>" method="POST">
+                                        <button
+                                            class="px-3 py-1 rounded text-sm 
+                       <%= currentUser.following.includes(reel.user._id) ? 'bg-gray-700 text-white' : 'bg-blue-500 text-white' %>">
+                                            <%= currentUser.following.some(f=> f._id.toString() ===
+                                                reel.user._id.toString())
+                                                ? 'Unfollow' : 'Follow' %>
+                                        </button>
+                                    </form>
+                                    <% } %>
+                            </div>
+
+                            <!-- Caption below -->
+                            <p class="mt-2">
+                                <%= reel.caption %>
+                            </p>
+                        </div>
+                    </div>
+                    <button class="absolute bottom-4 right-4 bg-black/50 text-white p-2 rounded-full"
+                        onclick="toggleMute(this)">
+                        <i class="fa-solid fa-volume-xmark"></i>
+                    </button>
+                </div>
+                <% }) %>
+        </div>
+    </div>
+
+    <!-- JS for autoplay -->
+    <script>
+        const videos = document.querySelectorAll(".reel-video");
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.play();
+                } else {
+                    entry.target.pause();
+                }
+            });
+        }, { threshold: 0.8 });
+
+        videos.forEach(video => observer.observe(video));
+
+        function toggleMute(btn) {
+            const video = btn.closest(".relative").querySelector("video");
+            const icon = btn.querySelector("i");
+
+            if (video.muted) {
+                video.muted = false;
+                icon.classList.remove("fa-volume-xmark");
+                icon.classList.add("fa-volume-high");
+            } else {
+                video.muted = true;
+                icon.classList.remove("fa-volume-high");
+                icon.classList.add("fa-volume-xmark");
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

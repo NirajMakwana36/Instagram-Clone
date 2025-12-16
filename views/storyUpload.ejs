@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="bg-zinc-900 text-white w-full h-screen flex-col items-center justify-center">
+    <div class="w-full h-screen bg-zinc-900 text-white p-10">
+        <h1 class="text-2xl mb-5">Upload Story</h1>
+        <form action="/story" method="post" enctype="multipart/form-data">
+            <input type="file" name="storyImage" class="mb-5 border-2 border-zinc-500 px-3 py-2 w-96"/><br>
+            <input type="text" name="caption" placeholder="Caption" class="mb-5 border-2 border-zinc-500 px-3 py-2 w-96"/><br>
+            <input type="submit" class="px-3 py-2 bg-blue-500 rounded-md" value="Upload">
+        </form>
+    </div>
+  </body>
+</html>

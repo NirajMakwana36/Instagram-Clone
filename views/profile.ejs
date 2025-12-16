@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .navbar a:hover {
+            background-color: rgba(134, 134, 134, 0.194);
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<div class="post-box hidden w-full h-screen fixed top-0 left-0 overflow-hidden bg-zinc-850 z-40 flex items-center">
+    <h1 onclick="document.querySelector('.post-box').style.display = 'none'"
+        class="absolute top-5 right-5 cursor-pointer"><i class="fa-solid fa-xmark"></i></h1>
+
+    <div class="container mx-auto h-170 w-280 bg-blue-600 flex item-center justify-center">
+
+        <!-- Right: Post Image -->
+        <div class="right h-full w-280 bg-red-500">
+            <img src="" alt="" class="w-full h-full object-cover z-50">
+        </div>
+
+        <!-- Left: User + Comments + Input -->
+        <div class="left h-full w-200 bg-zinc-900 flex flex-col p-2 gap-5">
+
+            <!-- Header (user info) -->
+            <div class="flex items-center gap-3 border-b border-zinc-700 pb-2">
+                <img id="modal-profile-pic" src="" class="w-10 h-10 rounded-full object-cover border border-gray-500">
+                <h2 id="modal-username" class="text-white font-semibold"></h2>
+            </div>
+
+            <!-- Comments Well -->
+            <div class="comments flex-1 overflow-y-auto pr-2">
+                <!-- JS will inject comments here -->
+            </div>
+
+            <!-- Add Comment Form -->
+            <form id="commentForm" action="" method="POST"
+                class="flex items-center gap-2 border-t border-zinc-700 pt-2">
+                <input type="text" id="commentInput" name="comment" placeholder="Add a comment..."
+                    class="w-full h-10 bg-zinc-800 text-white px-3 rounded-md outline-none">
+                <button type="submit" class="text-blue-500 font-semibold">Post</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<div style="display: none;" class="upload fixed h-screen w-full z-50 flex items-center justify-center">
+    <div class="center w-100 h-90 bg-zinc-800 rounded-lg">
+        <form action="/profile-pic" method="post" enctype="multipart/form-data">
+            <div class="flex flex-col item-center justify-center gap-10 p-10">
+                <h1 class="text-2xl font-light">Change Profile Picture</h1>
+                <input type="file" name="pic" id="profilePic" class="text-white
+                file:bg-zinc-900 file:border-0 file:rounded-md file:px-3 file:py-1
+                file:text-white file:cursor-pointer
+                hover:file:bg-zinc-700
+                ">
+                <div class="flex gap-10">
+                    <button class="bg-blue-700 px-3 py-1 rounded-md cursor-pointer" type="submit">Upload</button>
+                    <a href="/profile"><button onclick="document.querySelector('.upload').style.display = 'none'"
+                            class="bg-zinc-700 cursor-pointer px-3 py-1 rounded-md" type="button">Cancel</button></a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<body class="bg-zinc-950 text-white overflow-x-hidden">
+    <div style="border-right: 1px solid #313131;" class="fixed h-screen w-60">
+        <div class="mx-10 h-screen w-full flex flex-col item-center justify-center gap-10">
+            <div class="header">
+                <h1 class="text-2xl">Instagram</h1>
+            </div>
+            <div class="navbar flex flex-col gap-8">
+                <a href="/home" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-house"></i> Home</h2>
+                </a>
+                <a href="/search" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-magnifying-glass"></i> Search</h2>
+                </a>
+                <a href="/explore" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-compass"></i> Explore</h2>
+                </a>
+                <a href="/reels" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-clapperboard"></i> Reels</h2>
+                </a>
+                <a href="/messages" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-paper-plane"></i> Messages</h2>
+                </a>
+                <a href="/notifications" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-heart"></i> Notifications</h2>
+                </a>
+                <a href="/create" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-square-plus"></i> Create</h2>
+                </a>
+                <a href="/profile" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-user"></i> Profile</h2>
+                </a>
+                <a href="#" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="more-btn flex gap-5"><i class="fa-solid fa-bars"></i> More</h2>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+    <a href="/logout" class="logout-box cursor-pointer" style="visibility: hidden;">
+        <div class="w-36 h-16 fixed bottom-24 cursor-pointer left-10 bg-zinc-900 flex items-center justify-center rounded-md">
+            <button class="text-xl cursor-pointer">Logout</button>
+        </div>
+    </a>
+
+
+
+    <div class="absolute left-60 w-322 h-screen">
+        <div class="h-100 p-10 px-50">
+            <div class="left bg-zinc-950 w-full h-100 flex-col item-center gap-30">
+                <div class="flex gap-50">
+                    <div onclick="document.querySelector('.upload').style.display = 'block'"
+                        class="profile-pic w-42 h-42 rounded-full cursor-pointer border-2 border-zinc-900 overflow-hidden">
+                        <img src="/uploads/<%= pic %>" alt="" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-col">
+                        <div class="profile-info mt-5 flex item-center gap-5">
+                            <h1 class="text-2xl font-light">
+                                <%= user.username %>
+                            </h1>
+                            <a href="/edit/<%= user._id %>">
+                                <button class="bg-zinc-800 px-2 py-1 text-xl rounded-md cursor-pointer">Edit
+                                    Profile</button>
+                            </a>
+                            <button onclick="document.querySelector('.liked-btn').style.display='block'"
+                                class="px-2 py-1 text-xl rounded-md cursor-pointer"><i class="fa-solid fa-gear"></i>
+                            </button>
+                            <a href="/liked" style="display: none;" class="liked-btn"><button
+                                    class=" bg-zinc-600 px-2 py-1 text-xl rounded-md cursor-pointer">
+                                    Liked Posts
+                                </button></a>
+
+
+
+                        </div>
+                        <div class="followers">
+                            <h2 class="text-lg font-light text-zinc-400 mt-5"><span class="text-white">
+                                    <%= user.posts.length %>
+                                </span> posts
+                                &nbsp; &nbsp; <span class="text-white">
+                                    <%= user.followers.length %>
+                                </span> followers &nbsp; &nbsp; <span class="text-white">
+                                    <%= user.following.length %>
+                                </span> following</h2>
+                        </div>
+                        <div class="bio mt-5">
+                            <h2 class="text-lg font-light">
+                                <%= user.bio %>
+                            </h2>
+                            <a href="<%= user.website %>" rel="noopener noreferrer">
+                                <h2 class="mt-1 text-lg text-blue-500 font-light">
+                                    <%= user.website %>
+                                </h2>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <a href="/story">
+                <div class="mt-10 story w-full h-50">
+                    <div
+                        class="rounded-full border-2 border-zinc-900 h-32 w-32 bg-zinc-950 mt-4 flex item-center justify-center">
+                        <h1 class="mt-12 text-4xl"><i class="fa-solid fa-plus"></i></h1>
+                    </div>
+                </div>
+                </a>
+            </div>
+        </div>
+        <div class="right px-30 flex item-center justify-center">
+            <h1 class="text-xl font-light text-center  w-full mx-10 border-b-1 border-zinc-900">
+                <button class="tab-btn px-10 py-3 active" onclick="showTab('posts')">
+                    <i class="fa-solid fa-table-cells"></i> Posts
+                </button>
+                <button class="tab-btn px-10 py-3" onclick="showTab('reels')">
+                    <i class="fa-solid fa-clapperboard"></i> Reels
+                </button>
+            </h1>
+        </div>
+        <div class="post-container mx-40 grid grid-cols-3 gap-5 mt-2">
+            <% newPost.reverse().forEach((post)=> { %>
+                <div class="post w-80 h-100 cursor-pointer" onclick='openPost(
+        "/uploads/<%= post.image %>", 
+        "/uploads/<%= post.user.pic %>", 
+        "<%= post.user.username %>", 
+        <%- JSON.stringify(post.comments) %>, 
+        "<%= post._id %>"
+      )'>
+
+                    <a href="/delete/<%= post._id %>" id="delete-btn"></a>
+                    <h1 class="absolute" onclick="document.querySelector('.delete-popup').style.visibility = 'visible'">
+                        <i class="fa-solid fa-trash"></i></h1>
+                    <img src="/uploads/<%= post.image %>" alt="" class="w-full h-full object-cover">
+                </div>
+                <% }) %>
+        </div>
+        <!-- Reels Grid -->
+
+    </div>
+
+    <div style="visibility: hidden;"
+        class="delete-popup fixed top-0 h-screen w-full flex flex-col items-center justify-center">
+        <div class="w-56 h-56 bg-zinc-800 rounded-lg  flex flex-col justify-center items-center gap-3">
+            <h1 class="text-2xl">Are you sure,</h1>
+            <div class="flex gap-3">
+                <button class="px-3 py-2 bg-red-500 rounded-md cursor-pointer" id="delete-btn-fake">Delete</button>
+                <button class="px-3 py-2 bg-blue-500 rounded-md cursor-pointer"
+                    onclick="document.querySelector('.delete-popup').style.visibility = 'hidden'">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <script>
+
+        let moreBtn = document.querySelector(".more-btn");
+        let logoutBtn = document.querySelector(".logout-box");
+        let isOpen = false;
+        moreBtn.addEventListener("click", () => {
+            if (isOpen == false) {
+                logoutBtn.style.visibility = "visible";
+                isOpen = true;
+            } else {
+                logoutBtn.style.visibility = "hidden";
+                isOpen = false;
+            }
+
+        });
+
+        let fakeDeleteBtn = document.querySelector("#delete-btn-fake");
+        let deleteBtn = document.querySelector("#delete-btn");
+
+        fakeDeleteBtn.addEventListener("click", () => {
+            deleteBtn.click();
+        })
+
+        function showTab(tab) {
+            document.getElementById("posts").classList.add("hidden");
+            document.getElementById("reels").classList.add("hidden");
+            document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+
+            document.getElementById(tab).classList.remove("hidden");
+            event.target.classList.add("active");
+        }
+
+        function openPost(imgUrl, profilePic, username, comments, postId) {
+            // show modal
+            document.querySelector('.post-box').style.display = 'flex';
+
+            // update post image
+            document.querySelector('.post-box .right img').src = imgUrl;
+
+            // update profile info
+            document.getElementById("modal-profile-pic").src = profilePic;
+            document.getElementById("modal-username").textContent = username;
+
+            // render comments
+            const commentBox = document.querySelector(".comments");
+            commentBox.innerHTML = "";
+            comments.forEach(c => {
+                commentBox.innerHTML += `
+            <div class="flex items-start gap-2 mb-2">
+                <img src="/uploads/${c.user.pic}" class="w-8 h-8 rounded-full object-cover">
+                <p><b>${c.user.username}</b> ${c.text}</p>
+            </div>`;
+            });
+
+            // ✅ set form action dynamically
+            const form = document.getElementById("commentForm");
+            form.action = `/comment/${postId}`;
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications - Instagram Clone</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
+  <style>
+    /* Optional custom scrollbar for comments */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #555;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="bg-zinc-950 text-white flex">
+
+  <!-- Navbar Sidebar -->
+<div style="border-right: 1px solid #313131;" class="fixed h-screen w-60">
+        <div class="mx-10 h-screen w-full flex flex-col item-center justify-center gap-10">
+            <div class="header">
+                <h1 class="text-2xl">Instagram</h1>
+            </div>
+            <div class="navbar flex flex-col gap-8">
+                <a href="/home" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-house"></i> Home</h2>
+                </a>
+                <a href="/search" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-magnifying-glass"></i> Search</h2>
+                </a>
+                <a href="/explore" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-compass"></i> Explore</h2>
+                </a>
+                <a href="/reels" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-clapperboard"></i> Reels</h2>
+                </a>
+                <a href="/messages" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-paper-plane"></i> Messages</h2>
+                </a>
+                <a href="/notifications" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-heart"></i> Notifications</h2>
+                </a>
+                <a href="/create" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-square-plus"></i> Create</h2>
+                </a>
+                <a href="/profile" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-user"></i> Profile</h2>
+                </a>
+                <a href="" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-bars"></i> More</h2>
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+  <!-- Main Content -->
+  <div class="ml-60 p-6 flex-1">
+    <h2 class="text-2xl font-bold mb-6">Notifications</h2>
+
+    <div class="space-y-3">
+      <% notifications.forEach(n => { %>
+        <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-zinc-800 transition">
+          <img src="<%= n.sender.pic ? '/uploads/' + n.sender.pic : '/default.png' %>" class="w-12 h-12 rounded-full object-cover border border-gray-500">
+          <div class="flex-1">
+            <p class="text-white"><%= n.message %></p>
+            <small class="text-gray-400 text-sm"><%= new Date(n.createdAt).toLocaleString() %></small>
+          </div>
+          <% if(!n.isRead){ %>
+            <form action="/notifications/read/<%= n._id %>" method="POST">
+              <button class="bg-red-500 text-white text-xs px-3 py-1 rounded-full">New</button>
+            </form>
+          <% } %>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</body>
+</html>

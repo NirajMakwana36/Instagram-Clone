@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instagram Clone</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
+  <style>
+    .navbar a:hover {
+        background-color: rgba(134, 134, 134, 0.194);
+    }
+  </style>
+</head>
+<body class="bg-zinc-950 text-white flex">
+
+  <!-- Navbar Sidebar -->
+  <body class="bg-zinc-950 text-white overflow-x-hidden">
+    <div style="border-right: 1px solid #313131;" class="fixed h-screen w-60">
+        <div class="mx-10 h-screen w-full flex flex-col item-center justify-center gap-10">
+            <div class="header">
+                <h1 class="text-2xl">Instagram</h1>
+            </div>
+            <div class="navbar flex flex-col gap-8">
+                <a href="/home" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-house"></i> Home</h2>
+                </a>
+                <a href="/search" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-magnifying-glass"></i> Search</h2>
+                </a>
+                <a href="/explore" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-compass"></i> Explore</h2>
+                </a>
+                <a href="/reels" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-clapperboard"></i> Reels</h2>
+                </a>
+                <a href="/messages" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-paper-plane"></i> Messages</h2>
+                </a>
+                <a href="/notifications" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-heart"></i> Notifications</h2>
+                </a>
+                <a href="/create" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-square-plus"></i> Create</h2>
+                </a>
+                <a href="/profile" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-user"></i> Profile</h2>
+                </a>
+                <a href="" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-bars"></i> More</h2>
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+  <!-- Posts Grid -->
+  <div class="ml-60 p-10 flex-1">
+    <div class="post-container grid grid-cols-3 gap-5 mt-2">
+      <% newPost.reverse().forEach((post) => { %>
+        <div class="post w-90 h-80 cursor-pointer rounded overflow-hidden"
+             onclick='openPost(
+               "/uploads/<%= post.image %>", 
+               "/uploads/<%= post.user.pic %>", 
+               "<%= post.user.username %>",
+               <%- JSON.stringify(post.comments) %>, 
+               "<%= post._id %>",
+               <%- JSON.stringify(post.likes) %>,
+               "<%= currentUser._id %>"
+             )'>
+          <img src="/uploads/<%= post.image %>" alt="" class="w-full h-full object-cover">
+        </div>
+      <% }) %>
+    </div>
+  </div>
+
+  <!-- Post Modal -->
+  <div class="post-box hidden w-full h-screen fixed top-0 left-0 bg-black bg-opacity-80 z-40 flex items-center justify-center">
+    <h1 onclick="document.querySelector('.post-box').classList.add('hidden')"
+        class="absolute top-5 right-5 text-white text-xl cursor-pointer">✕</h1>
+
+    <div class="container mx-auto h-[650px] w-[1000px] bg-zinc-900 flex rounded-md overflow-hidden">
+      <!-- Right: Post Image -->
+      <div class="right flex-1">
+        <img src="" alt="" class="w-full h-full object-cover">
+      </div>
+
+      <!-- Left: User + Comments + Input -->
+      <div class="left w-80 flex flex-col p-4 gap-4">
+        <!-- Header -->
+        <div class="flex items-center gap-3 border-b border-zinc-700 pb-2">
+          <img id="modal-profile-pic" src="" class="w-10 h-10 rounded-full object-cover border border-gray-500">
+          <h2 id="modal-username" class="text-white font-semibold"></h2>
+        </div>
+
+        <!-- Comments -->
+        <div class="comments flex-1 overflow-y-auto pr-2"></div>
+
+        <!-- Add Comment Form -->
+        <form id="commentForm" action="" method="POST" class="flex items-center gap-2 border-t border-zinc-700 pt-2">
+          <input type="text" id="commentInput" name="comment" placeholder="Add a comment..."
+                 class="w-full h-10 bg-zinc-800 text-white px-3 rounded-md outline-none">
+          <button type="submit" class="text-blue-500 font-semibold">Post</button>
+        </form>
+
+        <!-- Likes -->
+        <div class="likes flex items-center gap-2 mt-2">
+          <form id="likeForm" method="POST">
+            <button type="submit" id="likeBtn" class="text-white font-semibold flex items-center gap-1">
+              <i class="fa-regular fa-heart text-xl"></i>
+              <span id="likeCount">0</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openPost(imgUrl, profilePic, username, comments, postId, likes, currentUserId) {
+      const postBox = document.querySelector('.post-box');
+      postBox.classList.remove('hidden');
+
+      // Post Image
+      postBox.querySelector('.right img').src = imgUrl;
+
+      // User Info
+      document.getElementById("modal-profile-pic").src = profilePic;
+      let modelUsername = document.getElementById("modal-username");
+      modelUsername.textContent = username;
+      // Comments
+      const commentBox = document.querySelector(".comments");
+      commentBox.innerHTML = "";
+      comments.forEach(c => {
+        commentBox.innerHTML += `
+        <a href="/newprofile/${c.user._id}">
+          <div class="flex items-start gap-2 mb-2">
+            <img src="/uploads/${c.user.pic}" class="w-8 h-8 rounded-full object-cover">
+            <p><b>${c.user.username}</b> ${c.text}</p>
+          </div> </a>`;
+      });
+
+      // Comment form action
+      const form = document.getElementById("commentForm");
+      form.action = `/comment/${postId}`;
+
+      // Likes
+      const likeCountEl = document.getElementById("likeCount");
+      const likeBtnIcon = document.querySelector("#likeBtn i");
+      likeCountEl.textContent = likes.length;
+
+      if (likes.some(like => like._id === currentUserId)) {
+        likeBtnIcon.classList.remove("fa-regular");
+        likeBtnIcon.classList.add("fa-solid", "text-red-500");
+      } else {
+        likeBtnIcon.classList.remove("fa-solid", "text-red-500");
+        likeBtnIcon.classList.add("fa-regular");
+      }
+
+      // Like form
+      const likeForm = document.getElementById("likeForm");
+      likeForm.action = `/like/${postId}`;
+    }
+  </script>
+
+</body>
+</html>

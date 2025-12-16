@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .navbar a:hover {
+            background-color: rgba(134, 134, 134, 0.194);
+        }
+
+        .scroll-bar {
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+        }
+
+        .scroll-bar::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari */
+        }
+
+        .comments {
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+        }
+
+        .comments::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari */
+        }
+
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body class="bg-zinc-950 text-white overflow-x-hidden">
+
+    <!-- 🔹 Post Modal (same as profile.ejs) -->
+    <div class="post-box" style="display: none;"
+        class="w-full h-screen fixed top-0 left-0 overflow-hidden bg-zinc-850 z-40 flex items-center">
+        <h1 onclick="document.querySelector('.post-box').style.display = 'none'"
+            class="absolute top-5 right-5 cursor-pointer"><i class="fa-solid fa-xmark"></i></h1>
+
+        <div class="container mx-auto h-170 w-280 bg-blue-600 flex item-center justify-center">
+            <!-- Right: Post Image -->
+            <div class="right h-full w-280 bg-red-500">
+                <img src="" alt="" class="w-full h-full object-cover z-50">
+            </div>
+
+            <!-- Left: User + Comments + Input -->
+            <div class="left h-full w-200 bg-zinc-900 flex flex-col p-2 gap-5">
+                <!-- Header -->
+                <div class="flex items-center gap-3 border-b border-zinc-700 pb-2">
+                    <img id="modal-profile-pic" src=""
+                        class="w-10 h-10 rounded-full object-cover border border-gray-500">
+                    <h2 id="modal-username" class="text-white font-semibold"></h2>
+                </div>
+
+
+                <!-- Comments -->
+                <div class="comments flex-1 overflow-y-auto pr-2">
+                    <!-- JS injects comments -->
+                </div>
+                <div class="likes flex items-center gap-2 mt-2">
+                    <form id="likeForm" method="POST">
+                        <button type="submit" id="likeBtn" class="text-white font-semibold flex items-center gap-1">
+                            <i class="fa-regular fa-heart text-xl"></i>
+                            <span id="likeCount">0</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Add Comment -->
+                <form id="commentForm" action="" method="POST"
+                    class="flex items-center gap-2 border-t border-zinc-700 pt-2">
+                    <input type="text" id="commentInput" name="comment" placeholder="Add a comment..."
+                        class="w-full h-10 bg-zinc-800 text-white px-3 rounded-md outline-none">
+                    <button type="submit" class="text-blue-500 font-semibold">Post</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- 🔹 End Modal -->
+
+    <!-- Sidebar -->
+    <div style="border-right: 1px solid #313131;" class="fixed h-screen w-60">
+        <div class="mx-10 h-screen w-full flex flex-col item-center justify-center gap-10">
+            <div class="header">
+                <h1 class="text-2xl">Instagram</h1>
+            </div>
+            <div class="navbar flex flex-col gap-8">
+                <a href="/home" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-house"></i> Home</h2>
+                </a>
+                <a href="/search" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-magnifying-glass"></i> Search</h2>
+                </a>
+                <a href="/explore" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-compass"></i> Explore</h2>
+                </a>
+                <a href="/reels" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-clapperboard"></i> Reels</h2>
+                </a>
+                <a href="/messages" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-paper-plane"></i> Messages</h2>
+                </a>
+                <a href="/notifications" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-heart"></i> Notifications</h2>
+                </a>
+                <a href="/create" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-square-plus"></i> Create</h2>
+                </a>
+                <a href="/profile" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-regular fa-user"></i> Profile</h2>
+                </a>
+                <a href="" class="text-xl font-light p-1 rounded-md">
+                    <h2 class="flex gap-5"><i class="fa-solid fa-bars"></i> More</h2>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Profile -->
+    <div class="absolute left-60 w-322 h-screen">
+        <div class="h-100 p-10 px-50">
+            <div class="left bg-zinc-950 w-full h-100 flex-col item-center gap-30">
+                <div class="flex gap-50">
+                    <div
+                        class="profile-pic cursor-pointer w-42 h-42 rounded-full border-2 border-zinc-900 overflow-hidden">
+                        <img src="/uploads/<%= user.pic || 'default.webp' %>" alt="" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-col">
+                        <div class="profile-info mt-5 flex item-center gap-5">
+                            <h1 class="text-2xl font-light">
+                                <%= user.username %>
+                            </h1>
+                            <% if (user._id.toString() !==currentUser._id.toString()) { %>
+                                <form action="/follow/<%= user._id %>" method="POST">
+                                    <button class="bg-blue-500 text-white px-3 py-1 rounded cursor-pointer">
+                                        <% if (user.followers.some(f=> f._id.toString() === currentUser._id.toString()))
+                                            { %>
+                                            Unfollow
+                                            <% } else { %>
+                                                Follow
+                                                <% } %>
+                                    </button>
+                                </form>
+                                <% } %>
+                        </div>
+                        <div class="followers">
+                            <h2 class="text-lg font-light text-zinc-400 mt-5">
+                                <span class="text-white">
+                                    <%= posts.length %>
+                                </span> posts
+                                &nbsp;&nbsp; <span class="cursor-pointer"
+                                    onclick="document.querySelector('.followers-box').style.visibility = 'visible'"><span
+                                        class="text-white cursor-pointer">
+                                        <%= user.followers.length %>
+                                    </span> followers </span>
+                                &nbsp;&nbsp;<span class="cursor-pointer"
+                                    onclick="document.querySelector('.following-box').style.visibility = 'visible'"><span
+                                        class="text-white cursor-pointer">
+                                        <%= user.following.length %>
+                                    </span> following </span>
+                            </h2>
+                        </div>
+                        <div class="bio mt-5">
+                            <h2 class="text-lg font-light">
+                                <%= user.bio %>
+                            </h2>
+                            <a href="/<%= user.website %>" rel="noopener noreferrer">
+                                <h2 class="mt-1 text-lg text-blue-500 font-light">
+                                    <%= user.website %>
+                                </h2>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-10 story w-full h-50">
+                    <div
+                        class="rounded-full border-2 border-zinc-900 h-32 w-32 bg-zinc-950 mt-4 flex item-center justify-center">
+                        <h1 class="mt-12 text-4xl"><i class="fa-solid fa-plus"></i></h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <!-- <div class="flex justify-center mt-10 border-b border-zinc-800 px-30">
+            <button class="tab-btn px-10 py-3 active" onclick="showTab('posts')">
+                <i class="fa-solid fa-table-cells"></i> Posts
+            </button>
+            <button class="tab-btn px-10 py-3" onclick="showTab('reels')">
+                <i class="fa-solid fa-clapperboard"></i> Reels
+            </button>
+        </div> -->
+
+
+        <!-- Post Grid -->
+        <div class="right px-30 flex item-center justify-center">
+            <h1 class="text-xl font-light text-center  w-full mx-10 border-b-1 border-zinc-900">
+                <button class="tab-btn px-10 py-3 active cursor-pointer" onclick="showTab('posts')">
+                    <i class="fa-solid fa-table-cells"></i> Posts
+                </button>
+                <button class="tab-btn px-10 py-3 cursor-pointer" onclick="showTab('reels')">
+                    <i class="fa-solid fa-clapperboard"></i> Reels
+                </button>
+            </h1>
+        </div>
+
+        <div id="posts" class="post-container mx-40 grid grid-cols-3 gap-5 mt-2">
+            <% posts.reverse().forEach((post)=> { %>
+                <div class="post w-80 h-100 cursor-pointer" onclick='openPost(
+           "/uploads/<%= post.image %>", 
+           "/uploads/<%= post.user.pic %>", 
+           "<%= post.user.username %>", 
+           <%- JSON.stringify(post.comments) %>, 
+           "<%= post._id %>",
+           <%- JSON.stringify(post.likes) %>,
+           "<%= currentUser._id %>"
+       )'>
+                    <img src="/uploads/<%= post.image %>" alt="" class="w-full h-full object-cover">
+                </div>
+                <% }) %>
+        </div>
+
+        <!-- Reels Grid -->
+        <div id="reels" class="grid grid-cols-3 gap-2 p-5 hidden mx-40">
+            <% reels.reverse().forEach(reel=> { %>
+                <div class="w-75 h-120 bg-black cursor-pointer"
+                    onclick="openReelModal('/uploads/reels/<%= reel.video %>')">
+                    <video src="/uploads/reels/<%= reel.video %>" muted loop class="w-full h-full object-cover"></video>
+                    <h1 class="mx-68 mt-[-25px]"><i class="fa-solid fa-clapperboard"></i></h1>
+                </div>
+                <% }) %>
+        </div>
+
+
+    </div>
+
+
+    <div style="visibility: hidden; background-color: #000000bf;"
+        class="followers-box w-full h-screen fixed top-0 right-0 flex items-center justify-center">
+
+        <div class="box w-130 h-96 bg-zinc-900 rounded-3xl flex flex-col p-2 items-center">
+
+            <div class="flex relative">
+                <h1 class="text-2xl">Followers</h1>
+                <h1 onclick="document.querySelector('.followers-box').style.visibility = 'hidden'"
+                    class="cursor-pointer absolute right-[-190px] mt-2"><i class="fa-solid fa-xmark"></i></h1>
+            </div>
+            <div class="bg-zinc-800 w-full mt-3 border-b-1 border-gray-500"></div><br>
+            <div class="flex flex-col gap-4 overflow-y-auto scroll-bar">
+                <% followersData.forEach((u)=> { %>
+                    <div class="flex gap-55">
+                        <div class="flex gap-3">
+                            <div class="profile-pic w-10 h-10 rounded-full overflow-hidden">
+                                <img src="/uploads/<%= u.pic %>" alt="" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <a href="/newprofile/<%= u._id %>" class="hover:underline">
+                                    <h2 class="font-bold">
+                                        <%= u.username %>
+                                    </h2>
+                                </a>
+                                <h3 class="text-sm text-zinc-400">
+                                    <%= u.followers.length %> followers
+                                </h3>
+                            </div>
+                        </div>
+                        <% if (u._id !=currentUser._id) { %>
+                            <form action="/follow/<%= u._id %>" method="POST" class="ml-auto">
+                                <button class="text-white px-3 py-1 bg-blue-700 rounded-lg cursor-pointer">
+                                    <% if (u.followers.some(f=> f._id.toString() === currentUser._id.toString())) { %>
+                                        Unfollow
+                                        <% } else { %>
+                                            Follow
+                                            <% } %>
+                                </button>
+                            </form>
+                            <% } %>
+                    </div>
+                    <% }) %>
+            </div>
+        </div>
+    </div>
+
+
+    <div style="visibility: hidden; background-color: #000000bf;"
+        class="following-box w-full h-screen fixed top-0 right-0 flex items-center justify-center">
+
+        <div class="box w-130 h-96 bg-zinc-900 rounded-3xl flex flex-col p-2 items-center">
+
+            <div class="flex relative">
+                <h1 class="text-2xl">Following</h1>
+                <h1 onclick="document.querySelector('.following-box').style.visibility = 'hidden'"
+                    class="cursor-pointer absolute right-[-190px] mt-2"><i class="fa-solid fa-xmark"></i></h1>
+            </div>
+            <div class="bg-zinc-800 w-full mt-3 border-b-1 border-gray-500"></div><br>
+            <div class="flex flex-col gap-4 overflow-y-auto scroll-bar">
+                <% followingData.forEach((u)=> { %>
+                    <div class="flex gap-55">
+                        <div class="flex gap-3">
+                            <div class="profile-pic w-10 h-10 rounded-full overflow-hidden">
+                                <img src="/uploads/<%= u.pic %>" alt="" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <a href="/newprofile/<%= u._id %>" class="hover:underline">
+                                    <h2 class="font-bold">
+                                        <%= u.username %>
+                                    </h2>
+                                </a>
+                                <h3 class="text-sm text-zinc-400">
+                                    <%= u.followers.length %> followers
+                                </h3>
+                            </div>
+                        </div>
+                        <% if (u._id !=currentUser._id) { %>
+                            <form action="/follow/<%= u._id %>" method="POST" class="ml-auto">
+                                <button class="text-white px-3 py-1 bg-blue-700 rounded-lg cursor-pointer">
+                                    <% if (u.followers.some(f=> f._id.toString() === currentUser._id.toString())) { %>
+                                        Unfollow
+                                        <% } else { %>
+                                            Follow
+                                            <% } %>
+                                </button>
+                            </form>
+                            <% } %>
+                    </div>
+                    <% }) %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reels Model -->
+    <div
+        class="reel-box hidden w-full h-screen fixed top-0 left-0 overflow-hidden bg-black/90 z-50 flex items-center justify-center">
+        <!-- Close Button -->
+        <h1 onclick="closeReelModal()" class="absolute top-5 right-5 cursor-pointer text-white text-3xl">
+            <i class="fa-solid fa-xmark"></i>
+        </h1>
+
+        <!-- Reel Container -->
+        <div class="reel-container w-[400px] h-[700px] bg-black flex items-center justify-center relative">
+            <video id="modal-reel-video" src="" controls autoplay loop class="h-full object-cover"></video>
+        </div>
+    </div>
+
+
+
+
+    <div class="hidden profile-model fixed top-0 right-0 w-full h-screen flex flex-col gap-3 items-center justify-center"
+        style="background-color: #000000bf;">
+        <div class="cancel-btn">
+            <h1 class="absolute top-5 right-5 cursor-pointer text-white text-3xl">
+                <i class="fa-solid fa-xmark"></i>
+            </h1>
+        </div>
+        <div class="profile-pic w-60 h-60 rounded-full border-2 border-zinc-900 overflow-hidden">
+            <img src="/uploads/<%= user.pic || 'default.webp' %>" alt="" class="w-full h-full object-cover">
+        </div>
+        <div class="flex gap-5">
+            <h1 class="text-2xl">
+                <%= user.username %>
+            </h1>
+            <% if (user._id.toString() !==currentUser._id.toString()) { %>
+                <form action="/follow/<%= user._id %>" method="POST">
+                    <button class="bg-blue-500 text-white px-3 py-1 rounded cursor-pointer">
+                        <% if (user.followers.some(f=> f._id.toString() === currentUser._id.toString()))
+                            { %>
+                            Unfollow
+                            <% } else { %>
+                                Follow
+                                <% } %>
+                    </button>
+                </form>
+                <% } %>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- JS for Modal -->
+    <script>
+
+        const profileModel = document.querySelector(".profile-model");
+        const profilePic = document.querySelector(".profile-pic");
+        const cancelBtn = document.querySelector(".cancel-btn");
+
+        profilePic.addEventListener("click", () => {
+            profileModel.classList.remove("hidden");
+        })
+
+        cancelBtn.addEventListener("click", () => {
+            profileModel.classList.add("hidden");
+        })
+
+
+        function showTab(tab) {
+            document.getElementById("posts").classList.add("hidden");
+            document.getElementById("reels").classList.add("hidden");
+            document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+
+            document.getElementById(tab).classList.remove("hidden");
+            event.target.classList.add("active");
+        }
+
+
+
+        function openPost(imgUrl, profilePic, username, comments, postId, likes, currentUserId) {
+            document.querySelector('.post-box').style.display = 'flex';
+
+            // update post image
+            document.querySelector('.post-box .right img').src = imgUrl;
+
+            // update profile info
+            document.getElementById("modal-profile-pic").src = profilePic;
+            document.getElementById("modal-username").textContent = username;
+
+            // render comments
+            const commentBox = document.querySelector(".comments");
+            commentBox.innerHTML = "";
+            comments.forEach(c => {
+                commentBox.innerHTML += `
+        <div class="flex items-start gap-2 mb-2">
+            <img src="/uploads/${c.user.pic}" class="w-8 h-8 rounded-full object-cover">
+            <p><b>${c.user.username}</b> ${c.text}</p>
+        </div>`;
+            });
+
+            // set comment form action
+            const form = document.getElementById("commentForm");
+            form.action = `/comment/${postId}`;
+
+            // set likes
+            const likeCountEl = document.getElementById("likeCount");
+            const likeBtnIcon = document.querySelector("#likeBtn i");
+            likeCountEl.textContent = likes.length;
+
+            // check if current user liked
+            if (likes.some(like => like._id === currentUserId)) {
+                likeBtnIcon.classList.remove("fa-regular");
+                likeBtnIcon.classList.add("fa-solid", "text-red-500");
+            } else {
+                likeBtnIcon.classList.remove("fa-solid", "text-red-500");
+                likeBtnIcon.classList.add("fa-regular");
+            }
+
+            // set like form action
+            const likeForm = document.getElementById("likeForm");
+            likeForm.action = `/like/${postId}`;
+        }
+
+        function openReelModal(videoSrc) {
+            const modal = document.querySelector(".reel-box");
+            const modalVideo = document.getElementById("modal-reel-video");
+
+            modal.style.display = "flex";
+            modalVideo.src = videoSrc;
+            modalVideo.play();
+        }
+
+        function closeReelModal() {
+            const modal = document.querySelector(".reel-box");
+            const modalVideo = document.getElementById("modal-reel-video");
+
+            modal.style.display = "none";
+            modalVideo.pause();   // ⏸️ stop video
+            modalVideo.currentTime = 0; // reset to start
+            modalVideo.src = "";  // clear source so no sound leaks
+        }
+
+
+    </script>
+</body>
+
+</html>

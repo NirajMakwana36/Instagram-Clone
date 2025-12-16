@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Feed</title>
+    <style>
+        .navbar a:hover {
+            background-color: rgba(134, 134, 134, 0.194);
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body class="bg-zinc-950 text-white">
+    <%- include("stories", { stories: stories }) %>
+        <br><br><br><br><br><br>
+
+
+        <div style="border-right: 1px solid #313131;" class="fixed h-screen w-60 top-0">
+            <div class="mx-10 h-screen w-full flex flex-col item-center justify-center gap-10">
+                <div class="header">
+                    <h1 class="text-2xl">Instagram</h1>
+                </div>
+                <div class="navbar flex flex-col gap-8">
+                    <a href="/home" class="text-xl font-light p-1 rounded-md">
+                        <h2 class="flex gap-5"><i class="fa-solid fa-house"></i> Home</h2>
+                    </a>
+                    <a href="/search" class="text-xl font-light p-1 rounded-md">
+                        <h2 class="flex gap-5"><i class="fa-solid fa-magnifying-glass"></i> Search</h2>
+                    </a>
+                    <a href="/explore" class="text-xl font-light p-1 rounded-md">
+                        <h2 class="flex gap-5"><i class="fa-regular fa-compass"></i> Explore</h2>
+                    </a>
+                    <a href="/reels" class="text-xl font-light p-1 rounded-md">
+                        <h2 class="flex gap-5"><i class="fa-solid fa-clapperboard"></i> Reels</h2>
+                    </a>
+                    <a href="/messages" class="text-xl font-light p-1 rounded-md">
+                        <h2 class="flex gap-5"><i class="fa-solid fa-paper-plane"></i> Messages</h2>
+                    </a>
+                    <a href="/notifications" class="text-xl font-light p-1 rounded-md">
+                        <h2 class="flex gap-5"><i class="fa-regular fa-heart"></i> Notifications</h2>
+                    </a>
+                    <a href="/create" class="text-xl font-light p-1 rounded-md">
+                        <h2 class="flex gap-5"><i class="fa-regular fa-square-plus"></i> Create</h2>
+                    </a>
+                    <a href="/profile" class="text-xl font-light p-1 rounded-md">
+                        <h2 class="flex gap-5"><i class="fa-regular fa-user"></i> Profile</h2>
+                    </a>
+                    <a href="" class="text-xl font-light p-1 rounded-md">
+                        <h2 class="flex gap-5"><i class="fa-solid fa-bars"></i> More</h2>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        <div class="max-w-xl mx-auto mt-6 ">
+            <!-- <h1 class="text-2xl mb-10 mt-5">Post Suggestions for you</h1> -->
+            <% posts.reverse().forEach(post=> { %>
+                <div class="rounded-xl shadow mb-6">
+                    <div class="p-3 font-bold">
+                        <div class="profile-pic w-10 h-10 rounded-full border-2 border-zinc-900 overflow-hidden inline">
+                            <img src="/uploads/<%= post.user.pic || 'default.webp' %>" alt=""
+                                class="w-10 h-10 rounded-full object-cover inline" />
+                        </div>
+                        <a href="newprofile/<%= post.user._id %>" class="hover:underline">
+                            <%= post.user.username %>
+                        </a>
+                    </div>
+                    <div class="p2 border-2 border-zinc-800 rounded-md">
+                <img src="/uploads/<%= post.image %>" class="w-full rounded-md" />
+                    </div>
+                    <div class="p-3">
+                        <form action="/like/<%= post._id %>" method="POST">
+                            <button type="submit" class="mt-2 text-xl">
+                                <% if (post.likes.includes(currentUser._id)) { %>
+                                    <i class="fa-solid fa-heart text-red-500"></i>
+                                    <% } else { %>
+                                        <i class="fa-regular fa-heart text-gray-500"></i>
+                                        <% } %>
+                                            <%= post.likes.length %>
+                            </button>
+                            <span class="text-xl">likes</span>
+                        </form>
+                        <div class="mt-2">
+                            <%= post.caption %>
+                        </div>
+                        <div class="mt-2">
+                            <p class="text-zinc-400">Comments</p>
+
+                            <% if (post.comments.length> 3) { %>
+                                <!-- View all link -->
+                                <a href="javascript:void(0)"
+                                    class="text-sm text-gray-400 hover:underline cursor-pointer"
+                                    onclick="toggleComments('<%= post._id %>')">
+                                    View all <%= post.comments.length %> comments
+                                </a>
+                                <% } %>
+
+                                    <!-- Show last 3 comments initially -->
+                                    <div id="comments-<%= post._id %>">
+                                        <% post.comments.slice(-3).forEach(c=> { %>
+                                            <p>
+                                                <a href="/newprofile/<%= c.user._id %>">
+                                                    <b>
+                                                        <%= c.user.username %>
+                                                    </b>
+                                                </a>
+                                                <%= c.text %>
+                                            </p>
+                                            <% }) %>
+                                    </div>
+
+                                    <!-- Hidden full comments -->
+                                    <div id="all-comments-<%= post._id %>" class="hidden">
+                                        <% post.comments.reverse().forEach(c=> { %>
+                                            <p>
+                                                <a href="/newprofile/<%= c.user._id %>">
+                                                    <b>
+                                                        <%= c.user.username %>
+                                                    </b>
+                                                </a>
+                                                <%= c.text %>
+                                            </p>
+                                            <% }) %>
+                                    </div>
+                        </div>
+
+                        <form action="/comment/<%= post._id %>" method="POST" class="mt-2">
+                            <input type="text" name="comment" placeholder="Add a comment"
+                                class="border-b-2 border-zinc-800 px-3 py-2 w-full  bg-zinc-950 outline-none " />
+                        </form>
+                    </div>
+                </div>
+                <% }) %>
+        </div>
+
+        <div class="absolute top-12 right-12 m-5 flex flex-col justify-center items-center gap-5">
+            <h2 class="font-bold text-lg mb-4">Suggestions For You</h2>
+            <% allUsers.reverse().forEach(u=> { %>
+                <div class="flex items-center gap-4 mb-4 flex-col">
+                    <div class="flex gap-3">
+                        <div class="profile-pic w-10 h-10 rounded-full border-2 border-zinc-900 overflow-hidden">
+                            <img src="/uploads/<%= u.pic %>" alt="" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <a href="newprofile/<%= u._id %>" class="hover:underline">
+                                <h2 class="font-bold">
+                                    <%= u.username %>
+                                </h2>
+                            </a>
+                            <h3 class="text-sm text-zinc-400">New to Instagram</h3>
+                        </div>
+                        <% if (u._id.toString() !==currentUser._id.toString()) { %>
+                            <form action="/follow/<%= u._id %>" method="POST" class="ml-auto">
+                                <button class="text-blue-500 font-bold">
+                                    <% if (u.followers.some(f=> f._id.toString() === currentUser._id.toString())) { %>
+                                        Unfollow
+                                        <% } else { %>
+                                            Follow
+                                            <% } %>
+                                </button>
+                            </form>
+                            <% } %>
+                    </div>
+                    <% }) %>
+
+                </div>
+
+
+
+
+
+                <script>
+                    function toggleComments(postId) {
+                        document.getElementById(`comments-${postId}`).classList.toggle("hidden");
+                        document.getElementById(`all-comments-${postId}`).classList.toggle("hidden");
+                    }
+                </script>
+
+</body>
+
+</html>
