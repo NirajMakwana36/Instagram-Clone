@@ -1,75 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Search</title>
     <style>
-        .navbar a:hover {
-            background-color: rgba(134, 134, 134, 0.194);
-        }
+      .navbar a:hover {
+        background-color: rgba(134, 134, 134, 0.194);
+      }
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
-</head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
+  </head>
 
-<body class="bg-zinc-950 text-white flex">
-
+  <body class="bg-zinc-950 text-white flex">
     <!-- Navbar -->
     <%- include('partials/sidebar.ejs') %>
 
     <!-- Search Sidebar -->
-    <div style="border-right: 1px solid #4c4c4c;" class="absolute left-60 top-0 w-1/4 h-screen bg-zinc-950 p-4 shadow-lg">
-        <!-- Search Form -->
-        <h1 class="text-2xl mb-5">Search</h1>
-        <form action="/search" method="GET" class="mb-4">
-            <input type="text" name="q" value="<%= query %>" placeholder="Search users..."
-                class="w-full p-2 rounded-md bg-zinc-800 text-white outline-none">
-            <button type="submit" class="hidden">Search</button>
-        </form>
-        <hr>
-        <br>
+    <div
+      style="border-right: 1px solid #4c4c4c"
+      class="absolute left-60 top-0 w-1/4 h-screen bg-zinc-950 p-4 shadow-lg"
+    >
+      <!-- Search Form -->
+      <h1 class="text-2xl mb-5">Search</h1>
+      <form action="/search" method="GET" class="mb-4">
+        <input
+          type="text"
+          name="q"
+          value="<%= query %>"
+          placeholder="Search users..."
+          class="w-full p-2 rounded-md bg-zinc-800 text-white outline-none"
+        />
+        <button type="submit" class="hidden">Search</button>
+      </form>
+      <hr />
+      <br />
 
-        <!-- Search Results -->
-        <div class="flex flex-col gap-4 overflow-y-auto h-[90%]">
-            <% if (users.length===0 && query) { %>
-                <p class="text-gray-400">No users found for "<%= query %>"</p>
-                <% } %>
+      <!-- Search Results -->
+      <div class="flex flex-col gap-4 overflow-y-auto h-[90%]">
+        <% if (users.length===0 && query) { %>
+        <p class="text-gray-400">No users found for "<%= query %>"</p>
+        <% } %> <% users.forEach(user=> { %>
+        <div
+          class="flex items-center justify-between p-2 rounded bg-zinc-800 hover:bg-zinc-850"
+        >
+          <a href="/newprofile/<%= user._id %>" class="flex items-center gap-3">
+            <img
+              src="<%= user.pic %>"
+              class="w-10 h-10 rounded-full object-cover border border-gray-500"
+            />
+            <div class="flex flex-col">
+              <span class="font-semibold text-white">
+                <%= user.username %>
+              </span>
+              <span class="text-gray-400 text-sm">
+                <%= user.followers.length %> followers
+              </span>
+            </div>
+          </a>
 
-                    <% users.forEach(user=> { %>
-                        <div class="flex items-center justify-between p-2 rounded bg-zinc-800 hover:bg-zinc-850">
-                            <a href="/newprofile/<%= user._id %>" class="flex items-center gap-3">
-                                <img src="<%= user.pic %>"
-                                    class="w-10 h-10 rounded-full object-cover border border-gray-500">
-                                <div class="flex flex-col">
-                                    <span class="font-semibold text-white">
-                                        <%= user.username %>
-                                    </span>
-                                    <span class="text-gray-400 text-sm">
-                                        <%= user.followers.length %> followers
-                                    </span>
-                                </div>
-                            </a>
-
-                            <% if (user._id.toString() !==currentUser._id.toString()) { %>
-                                <form action="/follow/<%= user._id %>" method="POST">
-                                    <button class="bg-blue-500 text-white px-3 py-1 rounded">
-                                        <% if (user.followers.some(f=> f._id.toString() === currentUser._id.toString()))
-                                            { %>
-                                            Unfollow
-                                            <% } else { %>
-                                                Follow
-                                                <% } %>
-                                    </button>
-                                </form>
-                                <% } %>
-                        </div>
-                        <% }) %>
+          <% if (user._id.toString() !==currentUser._id.toString()) { %>
+          <form action="/follow/<%= user._id %>" method="POST">
+            <button class="bg-blue-500 text-white px-3 py-1 rounded">
+              <% if (user.followers.some(f=> f._id.toString() ===
+              currentUser._id.toString())) { %> Unfollow <% } else { %> Follow
+              <% } %>
+            </button>
+          </form>
+          <% } %>
         </div>
-
+        <% }) %>
+      </div>
     </div>
-
-</body>
-
+  </body>
 </html>

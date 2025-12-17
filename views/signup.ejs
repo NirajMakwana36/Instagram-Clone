@@ -1,40 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-</head>
-<body>
-    <div class="form-container h-screen w-screen bg-zinc-950 flex items-center justify-center text-white flex-col gap-4">
-            <form action="/signup" method="post" class='h-96 w-80 bg-zinc-950 p-4 border border-zinc-600 flex justify-center flex-col gap-8'>
-                <div>
-                    <h1 class='text-3xl text-center'>Instagram</h1>
-                </div>
-                <div class="flex flex-col gap-2 items-center">
-                    <input  name="username" type="text"  class='w-full bg-zinc-900 border border-zinc-600 p-2 focus:outline-none'placeholder='Username'/>
-                    <input name="email" type="email"  class='w-full bg-zinc-900 border border-zinc-600 p-2 focus:outline-none'placeholder='Email'/>
-                    <input name="password" type="password"  class='w-full bg-zinc-900 border border-zinc-600 p-2 focus:outline-none' placeholder='Password'/>
-                    <button class='bg-blue-600 p-2 w-full rounded-md'>Sign Up</button>
-                </div>
-                <div class="h-16 flex flex-col gap-2 items-center justify-center">
-                    <div class="w-full flex items-center gap-2">
-                        <div class="w-1/2 bg-zinc-600 h-1"></div>OR<div class="w-1/2 bg-zinc-600 h-1"></div>
-                    </div>
-                    <h2 class='text-blue-700 text-center text-lg'>Login in with Facebook</h2>
-                    <p class='text-center'>Forgot Password?</p>
-                </div>
-            </form>
-            <div class="p-4 w-80 border border-zinc-600 flex justify-center">
-                <h1>have an account?
-                    <a href="/login"><span class='text-blue-600'> Log In</span></a>
-                </h1>
-            </div>
-            <div class="mt-10">
-                <h1 class='text-zinc-600 text-center'>Meta About Blog Jobs Help API Terms Locations Instagram Lite Threads Contact Uploading & Non-Users Meta Verified</h1>
-                <h1 class='text-zinc-600 text-center'>English &copy; 2025 Instagram from Meta</h1>
-            </div>
+  </head>
+  <body>
+    <div
+      class="form-container h-screen w-screen bg-zinc-950 flex items-center justify-center text-white flex-col gap-4"
+    >
+      <form
+        action="/signup"
+        method="post"
+        class="h-96 w-80 bg-zinc-950 p-4 border border-zinc-600 flex justify-center flex-col gap-8"
+      >
+        <div>
+          <h1 class="text-3xl text-center">Instagram</h1>
         </div>
-</body>
+        <div class="flex flex-col gap-2 items-center">
+          <input
+            name="username"
+            type="text"
+            class="w-full bg-zinc-900 border border-zinc-600 p-2 focus:outline-none"
+            placeholder="Username"
+          />
+          <input
+            name="email"
+            type="email"
+            class="w-full bg-zinc-900 border border-zinc-600 p-2 focus:outline-none"
+            placeholder="Email"
+          />
+          <input
+            name="password"
+            type="password"
+            class="w-full bg-zinc-900 border border-zinc-600 p-2 focus:outline-none"
+            placeholder="Password"
+          />
+          <button class="bg-blue-600 p-2 w-full rounded-md">Sign Up</button>
+        </div>
+        <div class="h-16 flex flex-col gap-2 items-center justify-center">
+          <div class="w-full flex items-center gap-2">
+            <div class="w-1/2 bg-zinc-600 h-1"></div>
+            OR
+            <div class="w-1/2 bg-zinc-600 h-1"></div>
+          </div>
+          <h2 class="text-blue-700 text-center text-lg">
+            Login in with Facebook
+          </h2>
+          <p class="text-center">Forgot Password?</p>
+        </div>
+      </form>
+      <div class="p-4 w-80 border border-zinc-600 flex justify-center">
+        <h1>
+          have an account?
+          <a href="/login"><span class="text-blue-600"> Log In</span></a>
+        </h1>
+      </div>
+      <div class="mt-10">
+        <h1 class="text-zinc-600 text-center">
+          Meta About Blog Jobs Help API Terms Locations Instagram Lite Threads
+          Contact Uploading & Non-Users Meta Verified
+        </h1>
+        <h1 class="text-zinc-600 text-center">
+          English &copy; 2025 Instagram from Meta
+        </h1>
+      </div>
+    </div>
+  </body>
 </html>

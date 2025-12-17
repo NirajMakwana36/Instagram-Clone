@@ -1,134 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create Post / Reel</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <style>
-        .upload-card {
-            max-width: 500px;
-            background-color: #1e1e1e;
-            border-radius: 10px;
-        }
+      .upload-card {
+        max-width: 500px;
+        background-color: #1e1e1e;
+        border-radius: 10px;
+      }
 
-        .upload-area {
-            border: 2px dashed #555;
-            border-radius: 10px;
-            height: 300px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+      .upload-area {
+        border: 2px dashed #555;
+        border-radius: 10px;
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: 0.3s;
+      }
 
-        .upload-area:hover {
-            border-color: #888;
-            background-color: #2a2a2a;
-        }
+      .upload-area:hover {
+        border-color: #888;
+        background-color: #2a2a2a;
+      }
 
-        .preview {
-            max-height: 300px;
-            border-radius: 10px;
-        }
+      .preview {
+        max-height: 300px;
+        border-radius: 10px;
+      }
 
-        .hidden-input {
-            display: none;
-        }
+      .hidden-input {
+        display: none;
+      }
     </style>
-</head>
+  </head>
 
-<body class="bg-zinc-950 text-white">
-
+  <body class="bg-zinc-950 text-white">
     <!-- sidebar -->
-        <%- include('partials/sidebar.ejs') %>
+    <%- include('partials/sidebar.ejs') %>
 
     <!-- Main Content -->
     <div class="ml-60 p-10 flex justify-center">
-        <div class="upload-card p-6 flex flex-col gap-6 w-full">
+      <div class="upload-card p-6 flex flex-col gap-6 w-full">
+        <h1 class="text-3xl font-semibold text-center">Create Post or Reel</h1>
 
-            <h1 class="text-3xl font-semibold text-center">Create Post or Reel</h1>
-
-            <!-- Toggle Buttons -->
-            <div class="flex justify-center gap-4">
-                <button id="postBtn" class="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700">Post</button>
-                <button id="reelBtn" class="px-4 py-2 bg-purple-600 rounded hover:bg-purple-700">Reel</button>
-            </div>
-
-            <!-- Post Form -->
-            <form id="postForm" action="/upload" method="POST" enctype="multipart/form-data"
-                class="flex flex-col gap-4">
-                <label class="upload-area" for="postFile" id="postDrop">
-                    <span id="postLabel">Click or drag an image here</span>
-                    <input type="file" name="image" accept="image/*" id="postFile" class="hidden-input" required>
-                </label>
-                <img id="postPreview" class="preview hidden" alt="Preview">
-
-                <textarea name="caption" placeholder="Write a caption..."
-                    class="p-2 rounded text-white resize-none outline-none bg-zinc-900"></textarea>
-                <button type="submit" class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Upload Post</button>
-            </form>
-
-            <!-- Reel Form -->
-            <form id="reelForm" action="/reels/upload" method="POST" enctype="multipart/form-data"
-                class="flex flex-col gap-4 hidden">
-                <label class="upload-area" for="reelFile" id="reelDrop">
-                    <span id="reelLabel">Click or drag a video here</span>
-                    <input type="file" name="video" accept="video/*" id="reelFile" class="hidden-input" required>
-                </label>
-                <video id="reelPreview" class="preview hidden" controls></video>
-
-                <textarea name="caption" placeholder="Write a caption..."
-                    class="p-2 rounded text-white resize-none outline-none bg-zinc-900"></textarea>
-                <button type="submit" class="bg-purple-600 px-4 py-2 rounded hover:bg-purple-700">Upload Reel</button>
-            </form>
-
+        <!-- Toggle Buttons -->
+        <div class="flex justify-center gap-4">
+          <button
+            id="postBtn"
+            class="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700"
+          >
+            Post
+          </button>
+          <button
+            id="reelBtn"
+            class="px-4 py-2 bg-purple-600 rounded hover:bg-purple-700"
+          >
+            Reel
+          </button>
         </div>
+
+        <!-- Post Form -->
+        <form
+          id="postForm"
+          action="/upload"
+          method="POST"
+          enctype="multipart/form-data"
+          class="flex flex-col gap-4"
+        >
+          <label class="upload-area" for="postFile" id="postDrop">
+            <span id="postLabel">Click or drag an image here</span>
+            <input
+              type="file"
+              name="image"
+              accept="image/*"
+              id="postFile"
+              class="hidden-input"
+              required
+            />
+          </label>
+          <img id="postPreview" class="preview hidden" alt="Preview" />
+
+          <textarea
+            name="caption"
+            placeholder="Write a caption..."
+            class="p-2 rounded text-white resize-none outline-none bg-zinc-900"
+          ></textarea>
+          <button
+            type="submit"
+            class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Upload Post
+          </button>
+        </form>
+
+        <!-- Reel Form -->
+        <form
+          id="reelForm"
+          action="/reels/upload"
+          method="POST"
+          enctype="multipart/form-data"
+          class="flex flex-col gap-4 hidden"
+        >
+          <label class="upload-area" for="reelFile" id="reelDrop">
+            <span id="reelLabel">Click or drag a video here</span>
+            <input
+              type="file"
+              name="video"
+              accept="video/*"
+              id="reelFile"
+              class="hidden-input"
+              required
+            />
+          </label>
+          <video id="reelPreview" class="preview hidden" controls></video>
+
+          <textarea
+            name="caption"
+            placeholder="Write a caption..."
+            class="p-2 rounded text-white resize-none outline-none bg-zinc-900"
+          ></textarea>
+          <button
+            type="submit"
+            class="bg-purple-600 px-4 py-2 rounded hover:bg-purple-700"
+          >
+            Upload Reel
+          </button>
+        </form>
+      </div>
     </div>
 
     <script>
-        const postBtn = document.getElementById("postBtn");
-        const reelBtn = document.getElementById("reelBtn");
-        const postForm = document.getElementById("postForm");
-        const reelForm = document.getElementById("reelForm");
+      const postBtn = document.getElementById("postBtn");
+      const reelBtn = document.getElementById("reelBtn");
+      const postForm = document.getElementById("postForm");
+      const reelForm = document.getElementById("reelForm");
 
-        postBtn.addEventListener("click", () => {
-            postForm.classList.remove("hidden");
-            reelForm.classList.add("hidden");
-        });
+      postBtn.addEventListener("click", () => {
+        postForm.classList.remove("hidden");
+        reelForm.classList.add("hidden");
+      });
 
-        reelBtn.addEventListener("click", () => {
-            reelForm.classList.remove("hidden");
-            postForm.classList.add("hidden");
-        });
+      reelBtn.addEventListener("click", () => {
+        reelForm.classList.remove("hidden");
+        postForm.classList.add("hidden");
+      });
 
-        // Post preview
-        const postFile = document.getElementById("postFile");
-        const postPreview = document.getElementById("postPreview");
-        postFile.addEventListener("change", (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                postPreview.src = URL.createObjectURL(file);
-                postPreview.classList.remove("hidden");
-            }
-        });
+      // Post preview
+      const postFile = document.getElementById("postFile");
+      const postPreview = document.getElementById("postPreview");
+      postFile.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          postPreview.src = URL.createObjectURL(file);
+          postPreview.classList.remove("hidden");
+        }
+      });
 
-        // Reel preview
-        const reelFile = document.getElementById("reelFile");
-        const reelPreview = document.getElementById("reelPreview");
-        reelFile.addEventListener("change", (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                reelPreview.src = URL.createObjectURL(file);
-                reelPreview.classList.remove("hidden");
-            }
-        });
+      // Reel preview
+      const reelFile = document.getElementById("reelFile");
+      const reelPreview = document.getElementById("reelPreview");
+      reelFile.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          reelPreview.src = URL.createObjectURL(file);
+          reelPreview.classList.remove("hidden");
+        }
+      });
     </script>
-</body>
-
+  </body>
 </html>

@@ -1,47 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Notifications - Instagram Clone</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
-  <style>
-    /* Optional custom scrollbar for comments */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background-color: #555;
-      border-radius: 3px;
-    }
-  </style>
-</head>
-<body class="bg-zinc-950 text-white flex">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notifications - Instagram Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
+    <style>
+      /* Optional custom scrollbar for comments */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: #555;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body class="bg-zinc-950 text-white flex">
+    <!-- Navbar Sidebar -->
+    <%- include('partials/sidebar.ejs') %>
 
-  <!-- Navbar Sidebar -->
-<%- include('partials/sidebar.ejs') %>
+    <!-- Main Content -->
+    <div class="ml-60 p-6 flex-1">
+      <h2 class="text-2xl font-bold mb-6">Notifications</h2>
 
-  <!-- Main Content -->
-  <div class="ml-60 p-6 flex-1">
-    <h2 class="text-2xl font-bold mb-6">Notifications</h2>
-
-    <div class="space-y-3">
-      <% notifications.forEach(n => { %>
-        <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-zinc-800 transition">
-          <img src="<%= n.sender.pic ?  + n.sender.pic : '/default.png' %>" class="w-12 h-12 rounded-full object-cover border border-gray-500">
+      <div class="space-y-3">
+        <% notifications.forEach(n => { %>
+        <div
+          class="flex items-center gap-4 p-3 rounded-lg hover:bg-zinc-800 transition"
+        >
+          <img
+            src="<%= n.sender.pic ?  + n.sender.pic : '/default.png' %>"
+            class="w-12 h-12 rounded-full object-cover border border-gray-500"
+          />
           <div class="flex-1">
             <p class="text-white"><%= n.message %></p>
-            <small class="text-gray-400 text-sm"><%= new Date(n.createdAt).toLocaleString() %></small>
+            <small class="text-gray-400 text-sm"
+              ><%= new Date(n.createdAt).toLocaleString() %></small
+            >
           </div>
           <% if(!n.isRead){ %>
-            <form action="/notifications/read/<%= n._id %>" method="POST">
-              <button class="bg-red-500 text-white text-xs px-3 py-1 rounded-full">New</button>
-            </form>
+          <form action="/notifications/read/<%= n._id %>" method="POST">
+            <button
+              class="bg-red-500 text-white text-xs px-3 py-1 rounded-full"
+            >
+              New
+            </button>
+          </form>
           <% } %>
         </div>
-      <% }) %>
+        <% }) %>
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

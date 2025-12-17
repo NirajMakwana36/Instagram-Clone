@@ -1,157 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat - Instagram Clone</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body class="bg-black text-white">
-
-
-    <div style="border-right: 1px solid #313131;" class="absolute h-screen w-20">
-        <div class="mx-5 h-screen w-full flex flex-col item-center justify-center gap-10">
-            <div class="header">
-                <!-- <h1 class="text-2xl">Instagram</h1> -->
-            </div>
-            <div class="navbar flex flex-col gap-8">
-                <a href="/home" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-solid fa-house"></i></h2>
-                </a>
-                <a href="/search" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-solid fa-magnifying-glass"></i> </h2>
-                </a>
-                <a href="/explore" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-regular fa-compass"></i></h2>
-                </a>
-                <a href="/reels" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-solid fa-clapperboard"></i></h2>
-                </a>
-                <a href="/messages" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-solid fa-paper-plane"></i></h2>
-                </a>
-                <a href="/notifications" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-regular fa-heart"></i></h2>
-                </a>
-                <a href="/create" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-regular fa-square-plus"></i></h2>
-                </a>
-                <a href="/profile" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-regular fa-user"></i></h2>
-                </a>
-                <a href="" class="text-xl font-light p-1 rounded-md">
-                    <h2 class="flex gap-5"><i class="fa-solid fa-bars"></i></h2>
-                </a>
-
-            </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat - Instagram Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body class="bg-black text-white">
+    <div style="border-right: 1px solid #313131" class="absolute h-screen w-20">
+      <div
+        class="mx-5 h-screen w-full flex flex-col item-center justify-center gap-10"
+      >
+        <div class="header">
+          <!-- <h1 class="text-2xl">Instagram</h1> -->
         </div>
+        <div class="navbar flex flex-col gap-8">
+          <a href="/home" class="text-xl font-light p-1 rounded-md">
+            <h2 class="flex gap-5"><i class="fa-solid fa-house"></i></h2>
+          </a>
+          <a href="/search" class="text-xl font-light p-1 rounded-md">
+            <h2 class="flex gap-5">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </h2>
+          </a>
+          <a href="/explore" class="text-xl font-light p-1 rounded-md">
+            <h2 class="flex gap-5"><i class="fa-regular fa-compass"></i></h2>
+          </a>
+          <a href="/reels" class="text-xl font-light p-1 rounded-md">
+            <h2 class="flex gap-5"><i class="fa-solid fa-clapperboard"></i></h2>
+          </a>
+          <a href="/messages" class="text-xl font-light p-1 rounded-md">
+            <h2 class="flex gap-5"><i class="fa-solid fa-paper-plane"></i></h2>
+          </a>
+          <a href="/notifications" class="text-xl font-light p-1 rounded-md">
+            <h2 class="flex gap-5"><i class="fa-regular fa-heart"></i></h2>
+          </a>
+          <a href="/create" class="text-xl font-light p-1 rounded-md">
+            <h2 class="flex gap-5">
+              <i class="fa-regular fa-square-plus"></i>
+            </h2>
+          </a>
+          <a href="/profile" class="text-xl font-light p-1 rounded-md">
+            <h2 class="flex gap-5"><i class="fa-regular fa-user"></i></h2>
+          </a>
+          <a href="" class="text-xl font-light p-1 rounded-md">
+            <h2 class="flex gap-5"><i class="fa-solid fa-bars"></i></h2>
+          </a>
+        </div>
+      </div>
     </div>
 
-<div class="flex h-screen">
-  <!-- Sidebar -->
-  <div style="border-right: 1px solid #555555 ;" class="w-[225px] mx-[80px] p-4">
-    <h2 class="text-xl font-bold mb-4">Messages</h2>
-    <div class="space-y-2">
-      <% following.forEach(f => { %>
-        <a href="/messages/<%= f._id %>" class="flex items-center gap-3 p-2 rounded hover:bg-zinc-800">
-          <img src="<%= f.pic || '/default.png' %>" class="w-10 h-10 rounded-full object-cover">
-          <span><%= f.username %></span>
-        </a>
-      <% }) %>
-    </div>
-  </div>
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <div
+        style="border-right: 1px solid #555555"
+        class="w-[225px] mx-[80px] p-4"
+      >
+        <h2 class="text-xl font-bold mb-4">Messages</h2>
+        <div class="space-y-2">
+          <% following.forEach(f => { %>
+          <a
+            href="/messages/<%= f._id %>"
+            class="flex items-center gap-3 p-2 rounded hover:bg-zinc-800"
+          >
+            <img
+              src="<%= f.pic || '/default.png' %>"
+              class="w-10 h-10 rounded-full object-cover"
+            />
+            <span><%= f.username %></span>
+          </a>
+          <% }) %>
+        </div>
+      </div>
 
-  <!-- Chat Area -->
-  <div class="flex-1 flex flex-col absolute w-[1220px] h-screen right-0">
-    <!-- Chat Header -->
-    <div class="flex items-center gap-3 p-4 border-b border-zinc-800">
-      <img src="<%= chatUser.pic || '/default.png' %>" class="w-10 h-10 rounded-full object-cover">
-      <h2 class="font-semibold"><%= chatUser.username %></h2>
-    </div>
+      <!-- Chat Area -->
+      <div class="flex-1 flex flex-col absolute w-[1220px] h-screen right-0">
+        <!-- Chat Header -->
+        <div class="flex items-center gap-3 p-4 border-b border-zinc-800">
+          <img
+            src="<%= chatUser.pic || '/default.png' %>"
+            class="w-10 h-10 rounded-full object-cover"
+          />
+          <h2 class="font-semibold"><%= chatUser.username %></h2>
+        </div>
 
-    <!-- Messages -->
-    <div id="chatBox" class="flex-1 overflow-y-auto p-4 space-y-2 bg-black">
-      <% messages.forEach(m => { %>
-        <div class="<%= m.sender._id.toString() === currentUser ? 'text-right' : 'text-left' %>">
-          <div class="inline-block px-3 py-2 rounded-2xl max-w-xs break-words <%= m.sender._id.toString() === currentUser ? 'bg-blue-500 text-white' : 'bg-zinc-800 text-white' %>">
-            <%= m.text %>
+        <!-- Messages -->
+        <div id="chatBox" class="flex-1 overflow-y-auto p-4 space-y-2 bg-black">
+          <% messages.forEach(m => { %>
+          <div
+            class="<%= m.sender._id.toString() === currentUser ? 'text-right' : 'text-left' %>"
+          >
+            <div
+              class="inline-block px-3 py-2 rounded-2xl max-w-xs break-words <%= m.sender._id.toString() === currentUser ? 'bg-blue-500 text-white' : 'bg-zinc-800 text-white' %>"
+            >
+              <%= m.text %>
+            </div>
           </div>
+          <% }) %>
         </div>
-      <% }) %>
+
+        <!-- Typing indicator -->
+        <div id="typing" class="text-sm text-gray-400 px-4 py-1 hidden">
+          <%= chatUser.username %> is typing...
+        </div>
+
+        <!-- Input -->
+        <form id="msgForm" class="p-4 flex gap-2 border-t border-zinc-800">
+          <input
+            id="msgInput"
+            type="text"
+            placeholder="Message..."
+            class="flex-1 px-3 py-2 rounded-full bg-black border-2 border-zinc-700 text-white outline-none"
+          />
+          <button
+            type="submit"
+            class="px-4 py-2 bg-blue-500 rounded-full font-semibold"
+          >
+            Send
+          </button>
+        </form>
+      </div>
     </div>
 
-    <!-- Typing indicator -->
-    <div id="typing" class="text-sm text-gray-400 px-4 py-1 hidden">
-      <%= chatUser.username %> is typing...
-    </div>
+    <!-- Socket.IO -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
 
-    <!-- Input -->
-    <form id="msgForm" class="p-4 flex gap-2 border-t border-zinc-800">
-      <input id="msgInput" type="text" placeholder="Message..."
-        class="flex-1 px-3 py-2 rounded-full bg-black border-2 border-zinc-700 text-white outline-none">
-      <button type="submit" class="px-4 py-2 bg-blue-500 rounded-full font-semibold">Send</button>
-    </form>
-  </div>
-</div>
+      const currentUserId = "<%= currentUser %>";
+      const chatUserId = "<%= chatUser._id %>";
 
-<!-- Socket.IO -->
-<script src="/socket.io/socket.io.js"></script>
-<script>
-  const socket = io();
+      // Unique room for 2 users
+      const room = [currentUserId, chatUserId].sort().join("_");
+      socket.emit("joinRoom", room);
 
-  const currentUserId = "<%= currentUser %>";
-  const chatUserId = "<%= chatUser._id %>";
-
-  // Unique room for 2 users
-  const room = [currentUserId, chatUserId].sort().join("_");
-  socket.emit("joinRoom", room);
-
-  // Incoming message
-  socket.on("chatMessage", (msg) => {
-    const chatBox = document.querySelector("#chatBox");
-    const div = document.createElement("div");
-    div.className = msg.sender === currentUserId ? "text-right" : "text-left";
-    div.innerHTML = `
+      // Incoming message
+      socket.on("chatMessage", (msg) => {
+        const chatBox = document.querySelector("#chatBox");
+        const div = document.createElement("div");
+        div.className =
+          msg.sender === currentUserId ? "text-right" : "text-left";
+        div.innerHTML = `
       <div class="inline-block px-3 py-2 rounded-2xl max-w-xs break-words ${
-        msg.sender === currentUserId ? "bg-blue-500 text-white" : "bg-zinc-800 text-white"
+        msg.sender === currentUserId
+          ? "bg-blue-500 text-white"
+          : "bg-zinc-800 text-white"
       }">${msg.text}</div>`;
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  });
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      });
 
-  // Typing indicator
-  socket.on("typing", (sender) => {
-    if (sender !== currentUserId) {
-      document.getElementById("typing").style.display = "block";
-    }
-  });
-  socket.on("stopTyping", () => {
-    document.getElementById("typing").style.display = "none";
-  });
+      // Typing indicator
+      socket.on("typing", (sender) => {
+        if (sender !== currentUserId) {
+          document.getElementById("typing").style.display = "block";
+        }
+      });
+      socket.on("stopTyping", () => {
+        document.getElementById("typing").style.display = "none";
+      });
 
-  // Send message
-  const form = document.getElementById("msgForm");
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const text = document.getElementById("msgInput").value.trim();
-    if (text) {
-      const msg = { text, sender: currentUserId, receiver: chatUserId, room };
-      socket.emit("chatMessage", msg);
-      document.getElementById("msgInput").value = "";
-      socket.emit("stopTyping", room);
-    }
-  });
+      // Send message
+      const form = document.getElementById("msgForm");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const text = document.getElementById("msgInput").value.trim();
+        if (text) {
+          const msg = {
+            text,
+            sender: currentUserId,
+            receiver: chatUserId,
+            room,
+          };
+          socket.emit("chatMessage", msg);
+          document.getElementById("msgInput").value = "";
+          socket.emit("stopTyping", room);
+        }
+      });
 
-  // Typing detection
-  const input = document.getElementById("msgInput");
-  input.addEventListener("input", () => {
-    if (input.value.length > 0) {
-      socket.emit("typing", { room, sender: currentUserId });
-    } else {
-      socket.emit("stopTyping", room);
-    }
-  });
-</script>
-</body>
+      // Typing detection
+      const input = document.getElementById("msgInput");
+      input.addEventListener("input", () => {
+        if (input.value.length > 0) {
+          socket.emit("typing", { room, sender: currentUserId });
+        } else {
+          socket.emit("stopTyping", room);
+        }
+      });
+    </script>
+  </body>
 </html>

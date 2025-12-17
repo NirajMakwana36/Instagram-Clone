@@ -1,145 +1,164 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+      .scroll-bar {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <style>
-    .scroll-bar {
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
+      .scroll-bar::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+  </head>
 
-        .scroll-bar::-webkit-scrollbar {
-            display: none;
-        }
-  </style>
-</head>
-
-<body class="bg-zinc-900 text-white w-full h-screen flex-col items-center justify-center">
-  <!-- Story Thumbnails -->
-  <div class="flex gap-4 overflow-x-auto p-4 absolute left-60 top-0 mb-100 px-10 w-230  border-b border-zinc-800 scroll-bar">
-    <a href="/story">
-            <div
-                class="flex flex-col items-center  cursor-pointer">
-                <h1 class="flex text-zinc-400 items-center justify-center w-16 h-16 rounded-full border-2 border-zinc-500 object-cover"><i class="fa-solid fa-plus"></i></h1>
-                <small class="text-zinc-400">
-                    Add Story
-                </small>
-            </div>
-        </a>
-    <% stories.forEach((story, index) => { %>
-      <div class="flex flex-col items-center  cursor-pointer" onclick="openStory(<%= index %>)">
-        <img src="<%= story.image %>"
-          class="w-16 h-16 rounded-full border-2 border-pink-500 object-cover">
+  <body
+    class="bg-zinc-900 text-white w-full h-screen flex-col items-center justify-center"
+  >
+    <!-- Story Thumbnails -->
+    <div
+      class="flex gap-4 overflow-x-auto p-4 absolute left-60 top-0 mb-100 px-10 w-230 border-b border-zinc-800 scroll-bar"
+    >
+      <a href="/story">
+        <div class="flex flex-col items-center cursor-pointer">
+          <h1
+            class="flex text-zinc-400 items-center justify-center w-16 h-16 rounded-full border-2 border-zinc-500 object-cover"
+          >
+            <i class="fa-solid fa-plus"></i>
+          </h1>
+          <small class="text-zinc-400"> Add Story </small>
+        </div>
+      </a>
+      <% stories.forEach((story, index) => { %>
+      <div
+        class="flex flex-col items-center cursor-pointer"
+        onclick="openStory(<%= index %>)"
+      >
+        <img
+          src="<%= story.image %>"
+          class="w-16 h-16 rounded-full border-2 border-pink-500 object-cover"
+        />
         <small class="text-gray-400"><%= story.user.username %></small>
       </div>
-    <% }) %>
-  </div>
-
-  <!-- Story Modal -->
-  <div id="storyModal"
-    class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-95 z-50 flex flex-col">
-    
-    <!-- Progress bars -->
-    <div class="flex gap-1 px-2 pt-2">
-      <% stories.forEach(() => { %>
-        <div class="progress bg-gray-600 h-1 flex-1 rounded overflow-hidden">
-          <div class="bar bg-white h-1 w-0"></div>
-        </div>
       <% }) %>
     </div>
 
-    <!-- Header with profile + username + close -->
-    <div class="flex items-center justify-between px-4 py-3">
-      <div class="flex items-center gap-2">
-        <img id="storyUserPic" src="" class="w-8 h-8 rounded-full object-cover border border-gray-500">
-        <h2 id="storyUsername" class="text-sm font-semibold"></h2>
+    <!-- Story Modal -->
+    <div
+      id="storyModal"
+      class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-95 z-50 flex flex-col"
+    >
+      <!-- Progress bars -->
+      <div class="flex gap-1 px-2 pt-2">
+        <% stories.forEach(() => { %>
+        <div class="progress bg-gray-600 h-1 flex-1 rounded overflow-hidden">
+          <div class="bar bg-white h-1 w-0"></div>
+        </div>
+        <% }) %>
       </div>
-      <span onclick="closeStory()" class="text-white text-2xl cursor-pointer">✕</span>
+
+      <!-- Header with profile + username + close -->
+      <div class="flex items-center justify-between px-4 py-3">
+        <div class="flex items-center gap-2">
+          <img
+            id="storyUserPic"
+            src=""
+            class="w-8 h-8 rounded-full object-cover border border-gray-500"
+          />
+          <h2 id="storyUsername" class="text-sm font-semibold"></h2>
+        </div>
+        <span onclick="closeStory()" class="text-white text-2xl cursor-pointer"
+          >✕</span
+        >
+      </div>
+
+      <!-- Story image -->
+      <div class="flex-1 flex items-center justify-center">
+        <img
+          id="storyImg"
+          src=""
+          class="max-h-[80vh] max-w-[80vw] object-contain"
+        />
+      </div>
     </div>
 
-    <!-- Story image -->
-    <div class="flex-1 flex items-center justify-center">
-      <img id="storyImg" src="" class="max-h-[80vh] max-w-[80vw] object-contain">
-    </div>
-  </div>
+    <script>
+      const stories = <%- JSON.stringify(stories) %>;
+      let currentIndex = 0;
+      let timer;
 
-  <script>
-    const stories = <%- JSON.stringify(stories) %>;
-    let currentIndex = 0;
-    let timer;
-
-    function openStory(index) {
-      currentIndex = index;
-      showStory();
-      document.getElementById("storyModal").classList.remove("hidden");
-    }
-
-    function showStory() {
-      const story = stories[currentIndex];
-      document.getElementById("storyImg").src = `${story.image}`;
-      document.getElementById("storyUserPic").src = `${story.user.pic}` || "/default.png";
-      document.getElementById("storyUsername").innerText = story.user.username;
-
-      resetProgressBars();
-      animateProgress(currentIndex);
-
-      clearTimeout(timer);
-      timer = setTimeout(nextStory, 5000);
-    }
-
-    function nextStory() {
-      if (currentIndex < stories.length - 1) {
-        currentIndex++;
+      function openStory(index) {
+        currentIndex = index;
         showStory();
-      } else {
-        closeStory();
+        document.getElementById("storyModal").classList.remove("hidden");
       }
-    }
 
-    function prevStory() {
-      if (currentIndex > 0) {
-        currentIndex--;
-        showStory();
+      function showStory() {
+        const story = stories[currentIndex];
+        document.getElementById("storyImg").src = `${story.image}`;
+        document.getElementById("storyUserPic").src = `${story.user.pic}` || "/default.png";
+        document.getElementById("storyUsername").innerText = story.user.username;
+
+        resetProgressBars();
+        animateProgress(currentIndex);
+
+        clearTimeout(timer);
+        timer = setTimeout(nextStory, 5000);
       }
-    }
 
-    function closeStory() {
-      clearTimeout(timer);
-      document.getElementById("storyModal").classList.add("hidden");
-    }
-
-    function resetProgressBars() {
-      document.querySelectorAll(".progress .bar").forEach(bar => {
-        bar.style.width = "0%";
-      });
-    }
-
-    function animateProgress(i) {
-      const bar = document.querySelectorAll(".progress .bar")[i];
-      let width = 0;
-      const interval = setInterval(() => {
-        if (width >= 100) {
-          clearInterval(interval);
+      function nextStory() {
+        if (currentIndex < stories.length - 1) {
+          currentIndex++;
+          showStory();
         } else {
-          width += 2;
-          bar.style.width = width + "%";
+          closeStory();
         }
-      }, 100);
-    }
-
-    // Left/right click for navigation
-    document.getElementById("storyModal").addEventListener("click", (e) => {
-      const screenWidth = window.innerWidth;
-      if (e.clientX < screenWidth / 2) {
-        prevStory();
-      } else {
-        nextStory();
       }
-    });
-  </script>
 
-</body>
+      function prevStory() {
+        if (currentIndex > 0) {
+          currentIndex--;
+          showStory();
+        }
+      }
+
+      function closeStory() {
+        clearTimeout(timer);
+        document.getElementById("storyModal").classList.add("hidden");
+      }
+
+      function resetProgressBars() {
+        document.querySelectorAll(".progress .bar").forEach(bar => {
+          bar.style.width = "0%";
+        });
+      }
+
+      function animateProgress(i) {
+        const bar = document.querySelectorAll(".progress .bar")[i];
+        let width = 0;
+        const interval = setInterval(() => {
+          if (width >= 100) {
+            clearInterval(interval);
+          } else {
+            width += 2;
+            bar.style.width = width + "%";
+          }
+        }, 100);
+      }
+
+      // Left/right click for navigation
+      document.getElementById("storyModal").addEventListener("click", (e) => {
+        const screenWidth = window.innerWidth;
+        if (e.clientX < screenWidth / 2) {
+          prevStory();
+        } else {
+          nextStory();
+        }
+      });
+    </script>
+  </body>
 </html>
